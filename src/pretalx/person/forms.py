@@ -225,6 +225,22 @@ class SpeakerProfileForm(
         }
 
 
+class BulkSubmissionForm(forms.ModelForm):
+    def __init__(self, event, **kwargs):
+        self.event = event
+        super().__init__(**kwargs)
+
+    def save(self, *args, **kwargs):
+        instance = super().save(*args, **kwargs)
+        return instance
+
+    class Meta:
+        model = SpeakerProfile
+        fields = []
+        field_classes = {}
+        request_require = {}
+
+
 class OrgaProfileForm(forms.ModelForm):
     class Meta:
         model = User

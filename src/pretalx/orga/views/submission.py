@@ -1,5 +1,7 @@
 import datetime as dt
 import json
+import csv
+from io import StringIO
 from collections import Counter
 from contextlib import suppress
 from operator import itemgetter
@@ -32,6 +34,7 @@ from pretalx.common.urls import build_absolute_uri
 from pretalx.common.views import CreateOrUpdateView, context
 from pretalx.mail.models import QueuedMail
 from pretalx.orga.forms import SubmissionForm
+from pretalx.orga.forms import BulkSubmissionForm
 from pretalx.person.forms import OrgaSpeakerForm
 from pretalx.person.models import SpeakerProfile, User
 from pretalx.submission.forms import QuestionsForm, ResourceForm, SubmissionFilterForm
@@ -244,6 +247,277 @@ class SubmissionSpeakers(SubmissionViewMixin, TemplateView):
     @context
     def users(self):
         return User.objects.all()
+
+
+class BulkSubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateView):
+    model = Submission
+    form_class = BulkSubmissionForm
+    template_name = "orga/submission/bulkContent.html"
+    permission_required = "orga.view_submission"
+
+    def get_object(self):
+        return None
+        # try:
+        #     return super().get_object()
+        # except Http404 as not_found:
+        #     if self.request.path.rstrip("/").endswith("/bulk"):
+        #         return None
+        #     return not_found
+
+    @cached_property
+    def write_permission_required(self):
+        if self.kwargs.get("code"):
+            return "submission.edit_submission"
+        return "orga.create_submission"
+
+    @cached_property
+    def _formset(self):
+        formset_class = inlineformset_factory(
+            Submission,
+            Resource,
+            form=ResourceForm,
+            formset=BaseModelFormSet,
+            can_delete=True,
+            extra=0,
+        )
+        submission = self.get_object()
+
+        if self.request.method == "GET":
+            return formset_class(
+                None,
+                None,
+                Resource.objects.none(),
+                prefix="resource",
+            )
+        return formset_class(
+            self.request.POST if self.request.method == "POST" else None,
+            files=self.request.FILES if self.request.method == "POST" else None,
+            queryset=submission.resources.all()
+            if submission
+            else Resource.objects.none(),
+            prefix="resource",
+        )
+
+        # # GET csv OF BULK IMPORTS:
+        # bulkSubmissions = self.request.POST['bulkSubmissionCSV']
+        # if bulkSubmissions == '':
+        #     print ("CSV FIELD EMPTY")
+        # else:
+        #     for submissionLine in bulkSubmissions.splitlines():
+        #         submissionLine = submissionLine.split('|')
+        #         print(submissionLine)
+        #         # inject this into the the formset class
+        #         # newRequest = self.request.POST
+        #         self.request.POST._mutable = True
+        #         self.request.POST['speaker_name'] = submissionLine[0]
+        #         self.request.POST['speaker'] = submissionLine[1]
+        #         self.request.POST['title'] = submissionLine[2]
+        #         self.request.POST['abstract'] = submissionLine[3]
+        #         self.request.POST['internal_notes'] = submissionLine[4]
+        #         self.request.POST._mutable = False
+
+        #         print (formset_class(
+        #             self.request.POST,
+        #             None,
+        #             queryset=submission.resources.all() if submission else Resource.objects.none(),
+        #             prefix="resource",
+        #         ))
+
+    @context
+    def formset(self):
+        return self._formset
+
+    # @cached_property
+    # def _questions_form(self):
+    #     submission = self.get_object()
+    #     return QuestionsForm(
+    #         self.request.POST if self.request.method == "POST" else None,
+    #         files=self.request.FILES if self.request.method == "POST" else None,
+    #         target="submission",
+    #         submission=submission,
+    #         event=self.request.event,
+    #         for_reviewers=(
+    #             not self.request.user.has_perm(
+    #                 "orga.change_submissions", self.request.event
+    #             )
+    #             and self.request.user.has_perm(
+    #                 "orga.view_review_dashboard", self.request.event
+    #             )
+    #         ),
+    #     )
+
+    # @context
+    # def questions_form(self):
+    #     return self._questions_form
+
+    def save_formset(self, obj):
+        if not self._formset.is_valid():
+            return False
+
+        for form in self._formset.initial_forms:
+            if form in self._formset.deleted_forms:
+                if not form.instance.pk:
+                    continue
+                obj.log_action(
+                    "pretalx.submission.resource.delete",
+                    person=self.request.user,
+                    data={"id": form.instance.pk},
+                )
+                form.instance.delete()
+                form.instance.pk = None
+            elif form.has_changed():
+                form.instance.submission = obj
+                form.save()
+                change_data = {k: form.cleaned_data.get(k) for k in form.changed_data}
+                change_data["id"] = form.instance.pk
+                obj.log_action(
+                    "pretalx.submission.resource.update", person=self.request.user
+                )
+
+        extra_forms = [
+            form
+            for form in self._formset.extra_forms
+            if form.has_changed
+            and not self._formset._should_delete_form(form)
+            and form.instance.resource
+        ]
+        for form in extra_forms:
+            form.instance.submission = obj
+            form.save()
+            obj.log_action(
+                "pretalx.submission.resource.create",
+                person=self.request.user,
+                orga=True,
+                data={"id": form.instance.pk},
+            )
+
+        return True
+
+    def get_permission_required(self):
+        if "code" in self.kwargs:
+            return ["orga.view_submissions"]
+        return ["orga.create_submission"]
+
+    def get_permission_object(self):
+        return self.object or self.request.event
+
+    def get_success_url(self) -> str:
+        self.kwargs.update({"code": self.object.code})
+        return self.object.orga_urls.base
+
+    @transaction.atomic()
+    def form_valid(self, form):
+        created = not self.object
+        self.object = form.instance
+        # self._questions_form.submission = self.object
+        # if not self._questions_form.is_valid():
+        #     return self.get(self.request, *self.args, **self.kwargs)
+        form.instance.event = self.request.event
+
+        # # GET csv OF BULK IMPORTS:
+        bulkSubmissions = self.request.POST['bulkSubmissionCSV']
+        if bulkSubmissions == '':
+            print ("CSV FIELD EMPTY")
+        else:
+            for submissionLine in bulkSubmissions.splitlines():
+                submissionLine = submissionLine.split('|')
+                print(submissionLine)
+
+                # if there is a speaker email use that as an username, otherwise create a dummy email as using the speaker's full name for the username
+
+                # create a speaker ID in case there is no email
+                speakerID = submissionLine[0].strip().replace(" ", "")
+                speakerID = speakerID + "@NOEMAIL.NULL"
+
+                # check if there is a user with the speakerID in case there wasn't an email originally
+                speakerQset = User.objects.filter(email__iexact=speakerID)
+
+                # now there is an email for the speaker, update the user
+                if speakerQset and submissionLine[1] != '':
+                    speaker = speakerQset.first()
+                    speaker.email = submissionLine[1]
+                    speaker.save()
+                    # now this speaker will be ID'd be email
+
+                # decide which speakerID to use
+                speakerID = speakerID if submissionLine[1] == '' else submissionLine[1]
+
+                # see if the speaker is already in the system
+                try:
+                    speaker = User.objects.get(email__iexact=speakerID)  # TODO: send email!
+
+                except User.DoesNotExist:
+                    speaker = create_user_as_orga(
+                        email=speakerID,
+                        name=submissionLine[0],
+                        submission=submission,
+                    )
+                    messages.success(
+                        self.request,
+                        _(
+                            submissionLine[0] + "has been created!"
+                        ),
+                    )
+
+                # there is a speaker bio, add this to the speaker model
+                if submissionLine[2] and submissionLine[2] != '':
+                    profile = SpeakerProfile.objects.filter(event=form.event, user=speaker).first()
+                    profile.biography = submissionLine[2]
+                    profile.save()
+
+                # see if there is a talk title. If there isn't it's just to update the speaker and we can break out of this look
+                if not len(submissionLine) > 3:
+                    action = "pretalx.submission.speakerUpdate"
+                    form.instance.log_action(action, person=self.request.user, orga=True)
+                    continue
+
+                # check to see if there is a talk already with this title
+                submissionQset = Submission.objects.filter(title__iexact=submissionLine[2])
+
+                if submissionQset:
+                    print ("found an existing talk with this title...using")
+                    submission = submissionQset.first()
+                    # update info on this talk
+                    submission.submission_type = form.cleaned_data['submission_type']
+                    submission.track = form.cleaned_data['track']
+                    submission.abstract = submissionLine[3]
+                    submission.internal_notes = submissionLine[4]
+                    submission.content_locale = "en"
+                    messages.success(
+                        self.request,
+                        _(
+                            submissionLine[2] + "has been updated!"
+                        ),
+                    )
+
+                else:
+                    submission = Submission.objects.create(
+                        event=form.event,
+                        title=submissionLine[2],
+                        submission_type=form.cleaned_data['submission_type'],
+                        track=form.cleaned_data['track'],
+                        abstract=submissionLine[3],
+                        internal_notes=submissionLine[4],
+                        content_locale="en",
+                    )
+                    messages.success(
+                        self.request,
+                        _(
+                            submissionLine[2] + "has been created!"
+                        ),
+                    )
+
+                submission.speakers.add(speaker)
+                submission.save()
+                action = "pretalx.submission." + ("create" if created else "update")
+                form.instance.log_action(action, person=self.request.user, orga=True)
+
+        return redirect("/orga/event/hopetest-2020/submissions/")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["event"] = self.request.event
+        return kwargs
 
 
 class SubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateView):
