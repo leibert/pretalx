@@ -310,6 +310,11 @@ urlpatterns = [
                     name="submissions.create",
                 ),
                 url(
+                    "^submissions/bulk/$",
+                    submission.BulkSubmissionContent.as_view(),
+                    name="submissions.bulk",
+                ),
+                url(
                     "^submissions/cards/$",
                     cards.SubmissionCards.as_view(),
                     name="submissions.cards",
