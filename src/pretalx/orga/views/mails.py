@@ -394,6 +394,7 @@ class TemplateDetail(PermissionRequired, ActionFromUrl, CreateOrUpdateView):
         if template and template in template.event.fixed_templates:
             result = get_context_explanation()
             if template == template.event.update_template:
+                result = [item for item in result if item["name"] == "event_name"]
                 result.append(
                     {
                         "name": "notifications",
