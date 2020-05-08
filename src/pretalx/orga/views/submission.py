@@ -446,10 +446,11 @@ class BulkSubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateVi
                     submission.abstract = submissionLine[3]
                     submission.internal_notes = submissionLine[4]
                     submission.content_locale = "en"
+                    submission.state='accepted'
                     messages.success(
                         self.request,
                         _(
-                            submissionLine[2] + "has been updated!"
+                            submissionLine[3] + " has been updated!"
                         ),
                     )
 
@@ -466,45 +467,48 @@ class BulkSubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateVi
                     if submissionLine[4]:
                         submission.abstract = submissionLine[4]
                     if submissionLine[5]:
-                        submission.internal_notes = submissionLine[5],
+                        submission.internal_notes = submissionLine[5]
+                    submission.state = 'accepted'
                     submission.save()
 
                     messages.success(
                         self.request,
                         _(
-                            submissionLine[3] + "has been created!"
+                            submissionLine[3] + " has been created!"
                         ),
                     )
 
-                    # if there is a speaker email use that as an username, otherwise create a dummy email as using the speaker's full name for the username
-                    # if there are multiple speakers, only use the first
-                    submissionLine[0] = submissionLine[0].split(',')[0]
+                # if there is a speaker email use that as an username, otherwise create a dummy email as using the speaker's full name for the username
+                # if there are multiple speakers, only use the first
+                submissionLine[0] = submissionLine[0].split(',')[0]
+                speaker = None
 
-                    # create a speaker ID in case there is no email
-                    speakerID = submissionLine[0].strip().replace(" ", "")
-                    speakerID = re.sub(r'\W+', '', speakerID)
-                    speakerID = speakerID + "@NOEMAIL.NULL"
+                # create a speaker ID in case there is no email
+                speakerID = submissionLine[0].strip().replace(" ", "")
+                speakerID = re.sub(r'\W+', '', speakerID)
+                speakerID = speakerID + "@NOEMAIL.NULL"
 
-                    # check if there is a user with the speakerID in case there wasn't an email originally
-                    speakerQset = User.objects.filter(email__iexact=speakerID)
+                # check if there is a user with the speakerID in case there wasn't an email originally
+                speakerQset = User.objects.filter(email__iexact=speakerID)
 
-                    # now there is an email for the speaker, update the user
-                    if speakerQset and submissionLine[1] != '':
-                        speaker = speakerQset.first()
-                        speaker.email = submissionLine[1]
-                        speaker.save()
-                        # now this speaker will be ID'd be email
+                # now there is an email for the speaker, update the user
+                if speakerQset and submissionLine[1].strip() != '':
+                    speaker = speakerQset.first()
+                    speaker.email = submissionLine[1]
+                    speaker.save()
+                    # now this speaker will be ID'd be email
 
-                    # decide which speakerID to use
-                    if submissionLine[1].strip() != '':
-                        speakerID = submissionLine[1]
+                # decide which speakerID to use
+                if submissionLine[1].strip() != '':
+                    speakerID = submissionLine[1]
 
-                    # see if the speaker is already in the system
+                # see if the speaker is already in the system
+                try:
+                    speaker = User.objects.get(email__iexact=speakerID)  # TODO: send email!
+
+                except User.DoesNotExist:
+                    # only create a speaker if there is a talk to tie it to. Will cut down on junk data during imports
                     try:
-                        speaker = User.objects.get(email__iexact=speakerID)  # TODO: send email!
-
-                    except User.DoesNotExist:
-                        # only create a speaker if there is a talk to tie it to. Will cut down on junk data during imports
                         if submission:
                             speaker = create_user_as_orga(
                                 email=speakerID,
@@ -514,22 +518,41 @@ class BulkSubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateVi
                             messages.success(
                                 self.request,
                                 _(
-                                    submissionLine[0] + "has been created!"
+                                    submissionLine[0] + " has been created!"
                                 ),
                             )
-
+                    except NameError:
+                        messages.success(
+                            self.request,
+                            _(
+                                submissionLine[0] + " ignored since no talk found!"
+                            ),
+                        )
+                try:
                     # there is a speaker bio, add this to the speaker model
-                    if submissionLine[2] and submissionLine[2] != '':
+                    if speaker and submissionLine[2] and submissionLine[2].strip() != '':
                         profile = SpeakerProfile.objects.filter(event=form.event, user=speaker).first()
-                        profile.biography = submissionLine[2]
-                        profile.save()
+                        if profile:
+                            profile.biography = submissionLine[2]
+                            profile.save()
+                        messages.success(
+                            self.request,
+                            _(
+                                submissionLine[0] + " updated with bio"
+                            ),
+                        )
+                except NameError:
+                    pass
 
+                try:
                     # if there was a submission changed/created, update speakers
                     if submission:
                         submission.speakers.add(speaker)
                         submission.save()
                         action = "pretalx.submission." + ("create" if created else "update")
                         form.instance.log_action(action, person=self.request.user, orga=True)
+                except NameError:
+                    pass
 
         return redirect("/orga/event/hopetest-2020/submissions/")
 
