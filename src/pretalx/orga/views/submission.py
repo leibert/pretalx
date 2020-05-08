@@ -146,8 +146,8 @@ class SubmissionStateChange(SubmissionViewMixin, TemplateView):
         except SubmissionError as e:
             messages.error(self.request, e.message)
 
-    @transaction.atomic
-    def post(self, request, *args, **kwargs):
+    # short circuit the confirmation prompt
+    def updateSubmissionState(self, request, *args, **kwargs):
         if self._target == self.object.state:
             messages.info(
                 request,
@@ -167,6 +167,14 @@ class SubmissionStateChange(SubmissionViewMixin, TemplateView):
     @context
     def next(self):
         return self.request.GET.get("next")
+
+    @transaction.atomic
+    def get(self, request, *args, **kwargs):
+        return self.updateSubmissionState(self, request, *args, **kwargs)
+
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        return self.updateSubmissionState(self, request, *args, **kwargs)
 
 
 class SubmissionSpeakersAdd(SubmissionViewMixin, View):
@@ -427,7 +435,7 @@ class BulkSubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateVi
                 # update talk info first
 
                 # check to see if there is a talk already with this title
-                submissionQset = Submission.objects.filter(title__iexact=submissionLine[2])
+                submissionQset = Submission.objects.filter(title__iexact=submissionLine[3])
 
                 if submissionQset:
                     print ("found an existing talk with this title...using")
