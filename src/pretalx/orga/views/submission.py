@@ -446,7 +446,7 @@ class BulkSubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateVi
                     submission.abstract = submissionLine[3]
                     submission.internal_notes = submissionLine[4]
                     submission.content_locale = "en"
-                    submission.state='accepted'
+                    submission.state = 'confirmed'
                     messages.success(
                         self.request,
                         _(
@@ -468,7 +468,7 @@ class BulkSubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateVi
                         submission.abstract = submissionLine[4]
                     if submissionLine[5]:
                         submission.internal_notes = submissionLine[5]
-                    submission.state = 'accepted'
+                    submission.state = 'confirmed'
                     submission.save()
 
                     messages.success(
