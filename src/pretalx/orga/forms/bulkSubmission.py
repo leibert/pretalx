@@ -14,6 +14,11 @@ class BulkSubmissionForm(ReadOnlyFlag, RequestRequire, forms.ModelForm):
             event=event
         )
 
+        if not event.settings.use_tracks:
+            self.fields.pop("track")
+        else:
+            self.fields["track"].queryset = event.tracks.all()
+
     def save(self, *args, **kwargs):
         instance = super().save(*args, **kwargs)
         return instance
