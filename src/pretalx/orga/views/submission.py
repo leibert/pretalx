@@ -472,7 +472,7 @@ class BulkSubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateVi
                         submission.internal_notes = submissionLine[5]
                     submission.state = 'accepted'
                     submission.save()
-                    submission.confirm(person=self.request.user)
+                    # submission.confirm(person=self.request.user)
 
                     messages.success(
                         self.request,

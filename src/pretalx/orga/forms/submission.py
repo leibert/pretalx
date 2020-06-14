@@ -53,6 +53,7 @@ class SubmissionForm(ReadOnlyFlag, RequestRequire, forms.ModelForm):
             "abstract",
             "description",
             "notes",
+            "edited_video",
             "internal_notes",
             "content_locale",
             "do_not_record",

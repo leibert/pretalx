@@ -47,8 +47,8 @@
                             <div class="resource-option-row">
                                 <div class="resource-option-input{% if action == 'view' %} disabled{% endif %}">
                                     {% bootstrap_form_errors form %}
-                                    {% bootstrap_field form.description layout='inline' %}
                                     {% bootstrap_field form.resource layout='inline'  %}
+                                    {% bootstrap_field form.description layout='inline' %}
                                 </div>
                                 {% if action != 'view' %}
                                 <div class="resource-option-delete">
@@ -69,8 +69,8 @@
                             </div>
                             <div class="resource-option-row">
                                 <div class="resource-option-input">
+                                    {% bootstrap_field formset.empty_form.resource layout='inline'  %} 
                                     {% bootstrap_field formset.empty_form.description layout='inline' %}
-                                    {% bootstrap_field formset.empty_form.resource layout='inline'  %}
                                 </div>
                                 <div class="resource-option-delete">
                                     <button type="button" class="btn btn-danger" data-formset-delete-button>
@@ -88,6 +88,10 @@
                 {% endif %}
             </div>
         {% endif %}
+
+        {% if form.abstract %}{% bootstrap_field form.edited_video layout='event' %}{% endif %}
+
+
         {% if form.instance.median_score != None and can_view_all_reviews %}
         <div class="form-group row">
             <label class="col-md-3 col-form-label">
@@ -107,7 +111,7 @@
         {% if form.notes %}{% bootstrap_field form.notes layout='event' %}{% endif %}
         {% bootstrap_field form.internal_notes layout='event' %}
         {% bootstrap_field form.content_locale layout='event' %}
-        {% if form.do_not_record %}{% bootstrap_field form.do_not_record layout='event' %}{% endif %}
+        {% comment %}{% if form.do_not_record %}{% bootstrap_field form.do_not_record layout='event' %}{% endif %}{% endcomment %}
         {% bootstrap_field form.is_featured layout='event' %}
         {% bootstrap_field form.duration addon_after='minutes' layout='event' addon_after_class="input-group-append input-group-text" %}
         {% if form.slot_count %}{% bootstrap_field form.slot_count layout='event' %}{% endif %}

@@ -161,6 +161,12 @@ class Submission(LogMixin, GenerateCode, models.Model):
         verbose_name=_("Description"),
         help_text=phrases.base.use_markdown,
     )
+    edited_video = models.CharField(
+        null=True,
+        blank=True,
+        verbose_name=_("Edited Video Path"),
+        max_length=2000,
+    )
     notes = models.TextField(
         null=True,
         blank=True,

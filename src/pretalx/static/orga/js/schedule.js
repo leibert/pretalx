@@ -279,7 +279,7 @@ Vue.component("talk", {
         title = title + "\n\n" + this.displayWarnings
       }
       if (this.talk.state === "accepted") {
-        title = title + "\n Not confirmed yet!"
+        title = title + "\n Not edited yet!"
       }
       return title
     },

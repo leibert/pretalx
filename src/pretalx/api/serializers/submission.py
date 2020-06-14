@@ -105,6 +105,7 @@ class SubmissionOrgaSerializer(SubmissionSerializer):
             "answers",
             "notes",
             "internal_notes",
+            "edited_video"
         ]
 
 

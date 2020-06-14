@@ -81,6 +81,7 @@ class Schedule(LogMixin, models.Model):
         self.talks.all().update(is_visible=False)
         self.talks.filter(
             models.Q(submission__state=SubmissionStates.CONFIRMED)
+            | models.Q(submission__state=SubmissionStates.ACCEPTED)
             | models.Q(submission__isnull=True),
             start__isnull=False,
         ).update(is_visible=True)

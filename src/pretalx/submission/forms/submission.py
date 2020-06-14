@@ -168,6 +168,7 @@ class InfoForm(CfPFormMixin, RequestRequire, PublicContent, forms.ModelForm):
             "track",
             "content_locale",
             "abstract",
+            "edited_video",
             "description",
             "notes",
             "slot_count",
