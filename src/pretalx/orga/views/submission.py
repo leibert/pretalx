@@ -472,7 +472,7 @@ class BulkSubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateVi
                         submission.internal_notes = submissionLine[5]
                     submission.state = 'accepted'
                     submission.save()
-                    # submission.confirm(person=self.request.user)
+                    submission.confirm(person=self.request.user)
 
                     messages.success(
                         self.request,
@@ -556,8 +556,9 @@ class BulkSubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateVi
                         form.instance.log_action(action, person=self.request.user, orga=True)
                 except NameError:
                     pass
+        
+        return redirect("/orga/event"+self.request.event.urls.base+"submissions/")
 
-        return redirect("/orga/event/hopetest-2020/submissions/")
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
