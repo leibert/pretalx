@@ -34,6 +34,10 @@ class SpeakerProfile(LogMixin, models.Model):
         null=True,
         blank=True,
     )
+
+
+   
+
     has_arrived = models.BooleanField(
         default=False, verbose_name=_("The speaker has arrived")
     )

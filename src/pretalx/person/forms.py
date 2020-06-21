@@ -119,7 +119,7 @@ class UserForm(CfPFormMixin, forms.Form):
 class SpeakerProfileForm(
     CfPFormMixin, AvailabilitiesFormMixin, ReadOnlyFlag, PublicContent, forms.ModelForm
 ):
-    USER_FIELDS = ["name", "email", "avatar", "get_gravatar"]
+    USER_FIELDS = ["name", "email", "avatar", "get_gravatar","twitter","mastadon","github","radioCallsign","personalWebsite"]
     FIRST_TIME_EXCLUDE = ["email"]
 
     def __init__(self, *args, name=None, **kwargs):

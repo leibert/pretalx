@@ -81,6 +81,13 @@
         <div class="d-flex mb-4">
             <a href="{{ form.instance.orga_urls.password_reset }}" class="btn btn-info ml-auto">{% trans "Reset password" %}</a>
         </div>
+
+        {% if form.twitter %}{% bootstrap_field form.twitter layout='event' %}{% endif %}
+        {% if form.mastadon %}{% bootstrap_field form.mastadon layout='event' %}{% endif %}
+        {% if form.github %}{% bootstrap_field form.github layout='event' %}{% endif %}
+        {% if form.radioCallsign %}{% bootstrap_field form.radioCallsign layout='event' %}{% endif %}
+        {% if form.personalWebsite %}{% bootstrap_field form.personalWebsite layout='event' %}{% endif %}
+        
         {% if form.biography %}{% bootstrap_field form.biography layout='event' %}{% endif %}
         {% if form.availabilities %}
         {% compress js %}

@@ -25,6 +25,12 @@
     <section class="speaker-info">
         <div class="speaker-bio">
             {{ profile.biography|rich_text }}
+ 
+            <br>{% if profile.user.twitter %} {{ profile.user.twitter }} {% endif %}
+            <br>{% if profile.user.mastadon %} {{ profile.user.mastadon }} {% endif %}
+            <br>{% if profile.user.github %} {{ profile.user.github }} {% endif %}
+            <br>{% if profile.user.radioCallsign %} {{ profile.user.radioCallsign }} {% endif %}
+            <br>{% if profile.user.personalWebsite %} {{ profile.user.personalWebsite }} {% endif %}
         </div>
         <div class="speaker-avatar">
             {% if profile.user.get_gravatar %}

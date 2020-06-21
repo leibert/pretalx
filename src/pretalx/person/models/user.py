@@ -111,6 +111,36 @@ class User(PermissionsMixin, GenerateCode, AbstractBaseUser):
         verbose_name=_("Profile picture"),
         help_text=_("If possible, upload an image that is least 120 pixels wide."),
     )
+    twitter = models.CharField(
+        verbose_name=_("Twitter Handle"),
+        null=True,
+        blank=True,
+        max_length=250,
+    )
+    mastadon = models.CharField(
+        verbose_name=_("Mastadon Profile"),
+        null=True,
+        blank=True,
+        max_length=250,
+    )
+    radioCallsign = models.CharField(
+        verbose_name=_("Amateur Radio Callsign"),
+        null=True,
+        blank=True,
+        max_length=250,
+    )
+    github = models.CharField(
+        verbose_name=_("Github Profile"),
+        null=True,
+        blank=True,
+        max_length=250,
+    )
+    personalWebsite = models.CharField(
+        verbose_name=_("Personal Website Addres"),
+        null=True,
+        blank=True,
+        max_length=250,
+    )
     get_gravatar = models.BooleanField(
         default=False,
         verbose_name=_("Retrieve profile picture via gravatar"),
