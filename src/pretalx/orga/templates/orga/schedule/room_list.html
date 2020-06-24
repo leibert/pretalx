@@ -6,9 +6,9 @@
     <h2>
         {{ request.event.rooms.count }}
         {% blocktrans trimmed count count=request.event.rooms.count %}
-        Room
+        Stream
         {% plural %}
-        Rooms
+        Streams
         {% endblocktrans %}
     </h2>
 
@@ -63,7 +63,7 @@
     <div class="submit-group"><span></span>
         <a class="btn btn-lg btn-success" href="{{ request.event.orga_urls.new_room }}">
             <i class="fa fa-plus"></i>
-            {% trans "New room" %}
+            {% trans "New Stream" %}
         </a>
     </div>
 </div>

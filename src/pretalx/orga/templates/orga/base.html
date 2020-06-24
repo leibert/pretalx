@@ -279,10 +279,7 @@
                         </a>
                     </div>
                 </div>
-                <a class="nav-link {% if "reviews." in url_name %}active{% endif %}" href="{% url "orga:reviews.dashboard" event=request.event.slug %}">
-                    <i class="fa fa-eye"></i>
-                    <span class="sidebar-text">{% trans "Review" %}</span>
-                </a>
+    
                 {% if can_view_speakers %}
                 <div class="nav-fold">
                     <span class="has-children">
@@ -324,7 +321,7 @@
                             <span>{% trans "Editor" %}</span>
                         </a>
                         <a href="{{ request.event.orga_urls.room_settings }}" class="nav-link nav-link-second-level{% if "schedule.rooms." in url_name %} active{% endif %}">
-                            <span>{% trans "Rooms" %}</span>
+                            <span>{% trans "Streams" %}</span>
                         </a>
                         <a href="{{ request.event.orga_urls.schedule_export }}" class="nav-link nav-link-second-level{% if "schedule.export" in url_name %} active{% endif %}">
                             <span>{% trans "Export" %}</span>
