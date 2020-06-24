@@ -117,8 +117,8 @@ class User(PermissionsMixin, GenerateCode, AbstractBaseUser):
         blank=True,
         max_length=250,
     )
-    mastadon = models.CharField(
-        verbose_name=_("Mastadon Profile"),
+    mastodon = models.CharField(
+        verbose_name=_("mastodon Profile"),
         null=True,
         blank=True,
         max_length=250,

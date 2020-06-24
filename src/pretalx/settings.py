@@ -243,16 +243,16 @@ if ADMINS:
 
 
 ## EMAIL SETTINGS
-MAIL_FROM = SERVER_EMAIL = DEFAULT_FROM_EMAIL = config.get("mail", "from")
+MAIL_FROM = SERVER_EMAIL = DEFAULT_FROM_EMAIL = "hopetest@mccarthyinternet.net"
 if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 else:
-    EMAIL_HOST = config.get("mail", "host")
-    EMAIL_PORT = config.get("mail", "port")
-    EMAIL_HOST_USER = config.get("mail", "user")
-    EMAIL_HOST_PASSWORD = config.get("mail", "password")
-    EMAIL_USE_TLS = config.getboolean("mail", "tls")
-    EMAIL_USE_SSL = config.getboolean("mail", "ssl")
+    EMAIL_HOST = "smtp.sendgrid.net"
+    EMAIL_PORT = 587
+    EMAIL_HOST_USER = "apikey"
+    EMAIL_HOST_PASSWORD = "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"
+    EMAIL_USE_TLS = True
+    EMAIL_USE_SSL = False
 
 
 ## CACHE SETTINGS

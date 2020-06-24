@@ -26,11 +26,11 @@
         <div class="speaker-bio">
             {{ profile.biography|rich_text }}
  
-            <br>{% if profile.user.twitter %} {{ profile.user.twitter }} {% endif %}
-            <br>{% if profile.user.mastadon %} {{ profile.user.mastadon }} {% endif %}
-            <br>{% if profile.user.github %} {{ profile.user.github }} {% endif %}
-            <br>{% if profile.user.radioCallsign %} {{ profile.user.radioCallsign }} {% endif %}
-            <br>{% if profile.user.personalWebsite %} {{ profile.user.personalWebsite }} {% endif %}
+            {% if profile.user.twitter %}<br><i class="fa fa-twitter"></i> {{ profile.user.twitter }} {% endif %}
+            {% if profile.user.mastodon %}<br><i class="fa fa-mastodon"></i> {{ profile.user.mastodon }} {% endif %}
+            {% if profile.user.github %}<br><i class="fa fa-github"></i> {{ profile.user.github }} {% endif %}
+            {% if profile.user.radioCallsign %}<br><i class="fa fa-wifi"></i> {{ profile.user.radioCallsign }} {% endif %}
+            {% if profile.user.personalWebsite %}<br><i class="fa fa-laptop"></i> {{ profile.user.personalWebsite }} {% endif %}
         </div>
         <div class="speaker-avatar">
             {% if profile.user.get_gravatar %}
