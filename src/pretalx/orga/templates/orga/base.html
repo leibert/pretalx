@@ -226,22 +226,22 @@
                     <span class="has-children">
                         <a class="nav-link nav-link-inner" href="{{ request.event.cfp.urls.text }}">
                             <i class="fa fa-bullhorn"></i>
-                            <span class="sidebar-text">{% trans "CfP" %}</span>
+                            <span class="sidebar-text">Configure</span>
                         </a>
                         <a class="arrow nav-link" data-toggle="collapse" href="#collapseCfP" aria-controls="collapseCfP">
                             <i class="fa fa-angle-down"></i>
                         </a>
                     </span>
                     <div class="collapse in{% if "cfp." in url_name %} show{% endif %}" aria-expand="true" id="collapseCfP">
-                        <a href="{{ request.event.cfp.urls.text }}" class="nav-link nav-link-second-level{% if "cfp.text" in url_name %} active{% endif %}">
+                        {% comment %} <a href="{{ request.event.cfp.urls.text }}" class="nav-link nav-link-second-level{% if "cfp.text" in url_name %} active{% endif %}">
                             <span>{% trans "Content" %}</span>
                         </a>
                         <a href="{{ request.event.cfp.urls.editor }}" class="nav-link nav-link-second-level{% if "cfp.flow" in url_name %} active{% endif %}">
                             <span>{% trans "Editor" %}</span>
-                        </a>
-                        <a href="{{ request.event.cfp.urls.questions }}" class="nav-link nav-link-second-level{% if "cfp.question" in url_name %} active{% endif %}">
+                        </a> {% endcomment %}
+                        {% comment %} <a href="{{ request.event.cfp.urls.questions }}" class="nav-link nav-link-second-level{% if "cfp.question" in url_name %} active{% endif %}">
                             <span>{% trans "Questions" %}</span>
-                        </a>
+                        </a> {% endcomment %}
                         {% if request.event.settings.use_tracks %}
                         <a href="{{ request.event.cfp.urls.tracks }}" class="nav-link nav-link-second-level{% if "cfp.tracks" in url_name %} active{% endif %}">
                             <span>{% trans "Tracks" %}</span>
@@ -250,9 +250,9 @@
                         <a href="{{ request.event.cfp.urls.types }}" class="nav-link nav-link-second-level{% if "cfp.types" in url_name %} active{% endif %}">
                             <span>{% trans "Submission types" %}</span>
                         </a>
-                        <a href="{{ request.event.cfp.urls.access_codes }}" class="nav-link nav-link-second-level{% if "cfp.access_code" in url_name %} active{% endif %}">
+                        {% comment %} <a href="{{ request.event.cfp.urls.access_codes }}" class="nav-link nav-link-second-level{% if "cfp.access_code" in url_name %} active{% endif %}">
                             <span>{% trans "Access codes" %}</span>
-                        </a>
+                        </a> {% endcomment %}
                     </div>
                 </div>
             {% endif %}

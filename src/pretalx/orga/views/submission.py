@@ -696,7 +696,9 @@ class SubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateView):
         if not self._questions_form.is_valid():
             return self.get(self.request, *self.args, **self.kwargs)
         form.instance.event = self.request.event
+        form.instance.state = 'accepted'
         form.save()
+        form.instance.confirm(person=self.request.user)
         self._questions_form.save()
 
         if created:
