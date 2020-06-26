@@ -718,7 +718,7 @@ class SubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateView):
                 messages.success(
                     self.request,
                     _(
-                        "The submission has been created and the speaker has been invited to add an account!"
+                        "The submission has been created."
                     ),
                 )
 

@@ -118,7 +118,7 @@ class User(PermissionsMixin, GenerateCode, AbstractBaseUser):
         max_length=250,
     )
     mastodon = models.CharField(
-        verbose_name=_("mastodon Profile"),
+        verbose_name=_("Mastodon Profile"),
         null=True,
         blank=True,
         max_length=250,
@@ -136,7 +136,7 @@ class User(PermissionsMixin, GenerateCode, AbstractBaseUser):
         max_length=250,
     )
     personalWebsite = models.CharField(
-        verbose_name=_("Personal Website Addres"),
+        verbose_name=_("Personal Website Address"),
         null=True,
         blank=True,
         max_length=250,
