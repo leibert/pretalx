@@ -18,7 +18,7 @@ class SubmissionForm(ReadOnlyFlag, RequestRequire, forms.ModelForm):
             self.fields["speaker"] = forms.EmailField(
                 label=_("Speaker email"),
                 help_text=_(
-                    "The email address of the speaker holding the talk. They will be invited to create an account."
+                    "The email address of the speaker holding the talk."
                 ),
             )
             self.fields["speaker_name"] = forms.CharField(
