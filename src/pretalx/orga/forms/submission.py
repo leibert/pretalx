@@ -28,7 +28,7 @@ class SubmissionForm(ReadOnlyFlag, RequestRequire, forms.ModelForm):
                 ),
             )
         if "abstract" in self.fields:
-            self.fields["abstract"].widget.attrs["rows"] = 2
+            self.fields["abstract"].widget.attrs["rows"] = 8
         if not event.settings.present_multiple_times:
             self.fields.pop("slot_count")
         if not event.settings.use_tracks:

@@ -443,8 +443,8 @@ class BulkSubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateVi
                     # update info on this talk
                     submission.submission_type = form.cleaned_data['submission_type']
                     submission.track = form.cleaned_data['track']
-                    submission.abstract = submissionLine[3]
-                    submission.internal_notes = submissionLine[4]
+                    submission.abstract = submissionLine[4]
+                    submission.internal_notes = submissionLine[5]
                     submission.content_locale = "en"
                     submission.state = 'accepted'
                     submission.save()
