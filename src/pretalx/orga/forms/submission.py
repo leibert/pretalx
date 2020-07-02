@@ -16,6 +16,7 @@ class SubmissionForm(ReadOnlyFlag, RequestRequire, forms.ModelForm):
 
         if not self.instance.pk:
             self.fields["speaker"] = forms.EmailField(
+                required=False,
                 label=_("Speaker email"),
                 help_text=_(
                     "The email address of the speaker holding the talk."

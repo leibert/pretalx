@@ -712,11 +712,41 @@ class SubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateView):
                     ),
                 )
             except User.DoesNotExist:
-                speaker = create_user_as_orga(
-                    email=email,
-                    name=form.cleaned_data["speaker_name"],
-                    submission=form.instance,
-                )
+
+                speakerID = form.cleaned_data["speaker_name"]
+                speaker = None
+
+                # create a speaker ID in case there is no email
+                speakerID = speakerID.strip().replace(" ", "")
+                speakerID = re.sub(r'\W+', '', speakerID)
+                speakerID = speakerID + "@NOEMAIL.NULL"
+
+                # check if there is a user with the speakerID in case there wasn't an email originally
+                speakerQset = User.objects.filter(email__iexact=speakerID)
+
+                # now there is an email for the speaker, update the user
+                if speakerQset:
+                    speaker = speakerQset.first()
+                    if form.cleaned_data["speaker"] != '':
+                        speaker.email = form.cleaned_data["speaker"]
+                        # now this speaker will be ID'd be email
+                        speakerID=speaker.email
+                        speaker.save()
+                    
+
+
+                # see if the speaker is already in the system
+                try:
+                    speaker = User.objects.get(email__iexact=speakerID)  # TODO: send email!
+                except:
+                    speaker = create_user_as_orga(
+                        email=speakerID,
+                        name=form.cleaned_data["speaker_name"],
+                        submission=form.instance,
+                    )
+                
+                form.instance.speakers.add(speaker)
+
                 messages.success(
                     self.request,
                     _(
@@ -724,7 +754,6 @@ class SubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateView):
                     ),
                 )
 
-            form.instance.speakers.add(speaker)
         else:
             formset_result = self.save_formset(form.instance)
             if not formset_result:
