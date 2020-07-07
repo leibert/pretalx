@@ -74,13 +74,16 @@ class ScheduleExportTriggerView(EventPermissionRequired, View):
                 _("A new export is being generated and will be available soon."),
             )
         else:
-            self.request.event.cache.set("rebuild_schedule_export", True, None)
-            messages.success(
-                self.request,
-                _(
-                    "A new export will be generated on the next scheduled opportunity – please contact your administrator for details."
-                ),
-            )
+            
+            export_schedule_html(event_id=self.request.event.id)
+
+            # self.request.event.cache.set("rebuild_schedule_export", True, None)
+            # messages.success(
+            #     self.request,
+            #     _(
+            #         "A new export will be generated on the next scheduled opportunity – please contact your administrator for details."
+            #     ),
+            # )
 
         return redirect(self.request.event.orga_urls.schedule_export)
 
