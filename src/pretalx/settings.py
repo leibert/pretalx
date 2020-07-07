@@ -64,6 +64,7 @@ EXTERNAL_APPS = [
     "jquery",
     "rest_framework.authtoken",
     "rules",
+    "crispy_forms"
 ]
 LOCAL_APPS = [
     "pretalx.api",
