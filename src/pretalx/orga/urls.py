@@ -516,6 +516,11 @@ urlpatterns = [
                     name="schedule.export",
                 ),
                 url(
+                    "^schedule/preview/$",
+                    schedule.SchedulePreviewView.as_view(),
+                    name="schedule.preview",
+                ),
+                url(
                     "^schedule/export/trigger$",
                     schedule.ScheduleExportTriggerView.as_view(),
                     name="schedule.export.trigger",

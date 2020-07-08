@@ -62,6 +62,16 @@ class ScheduleExportView(EventPermissionRequired, TemplateView):
             for _, exporter in register_data_exporters.send(self.request.event)
         )
 
+class SchedulePreviewView(EventPermissionRequired, TemplateView):
+    template_name = "orga/schedule/preview.html"
+    permission_required = "orga.view_schedule"
+
+
+    @context
+    def get_queryset(self):
+        return self.request.event.submissions.filter(is_featured=True)
+
+
 
 class ScheduleExportTriggerView(EventPermissionRequired, View):
     permission_required = "orga.view_schedule"

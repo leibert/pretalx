@@ -1,0 +1,44 @@
+{% extends "orga/schedule/base.html" %}
+{% load i18n %}
+{% load rich_text %}
+{% load static %}
+
+
+{% block schedule_content %}
+<h2>Talks for Preview</h2>
+<p>
+The following talks are approved for media preview:
+
+</p>
+
+
+
+
+    <!-- {{get_queryset}} -->
+    {% for talk in get_queryset %}
+        <h3>{{talk.title}}</h3>
+        <h4>{{talk.display_speaker_names}}</h4>
+        {{ talk.abstract|default:talk.description|default:""|rich_text }}
+        //---\\---//---\\---//---\\---//---\\---//---\\---//---//---\\---//---\\---//---\\---//---\\---//---\\---//---//---\\---//---\\---//---\\
+        <br>
+        <br>
+        <br>
+        
+        
+
+<!-- 
+    <div class="pretalx-schedule-talk active"
+    style="border-color: {{ talk.submission.track.color }}">
+
+        <div class="pretalx-schedule-talk-content">
+
+            <span class="pretalx-schedule-talk-title">{{ talk.title }}</span>    
+            <span class="pretalx-schedule-talk-speakers">({{ talk.display_speaker_names }})</span><br>
+        </div>
+    </div> -->
+    {% endfor %}
+
+
+
+
+{% endblock %}
