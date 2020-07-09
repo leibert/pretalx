@@ -497,8 +497,9 @@ class BulkSubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateVi
                 # now there is an email for the speaker, update the user
                 if speakerQset and submissionLine[1].strip() != '':
                     speaker = speakerQset.first()
-                    speaker.email = submissionLine[1]
-                    speaker.save()
+                    if speaker.email == None:
+                        speaker.email = submissionLine[1]
+                        speaker.save()
                     # now this speaker will be ID'd be email
 
                 # decide which speakerID to use
