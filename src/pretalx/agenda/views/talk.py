@@ -44,6 +44,25 @@ class TalkList(EventPermissionRequired, Filterable, ListView):
     def search(self):
         return self.request.GET.get("q")
 
+class TalkList_hope(EventPermissionRequired, Filterable, ListView):
+    context_object_name = "talks"
+    model = Submission
+    template_name = "agenda/talks_hope.html"
+    permission_required = "agenda.view_schedule"
+    default_filters = ("speakers__name__icontains", "title__icontains")
+
+    def get_queryset(self):
+        return (
+            self.filter_queryset(self.request.event.submissions)
+            .select_related("event")
+            .prefetch_related("speakers")
+            .distinct()
+        )
+
+    @context
+    def search(self):
+        return self.request.GET.get("q")
+
 
 class SpeakerList(EventPermissionRequired, Filterable, ListView):
     context_object_name = "speakers"
@@ -64,6 +83,31 @@ class SpeakerList(EventPermissionRequired, Filterable, ListView):
         for profile in qs:
             profile.talks = [
                 talk for talk in all_talks if profile.user in talk.speakers.all()
+            ]
+        return qs
+
+    @context
+    def search(self):
+        return self.request.GET.get("q")
+
+class SpeakerList_HOPE(EventPermissionRequired, Filterable, ListView):
+    context_object_name = "speakers"
+    template_name = "agenda/speakers_hope.html"
+    permission_required = "agenda.view_schedule"
+    default_filters = ("user__name__icontains",)
+
+    def get_queryset(self):
+        qs = (
+            SpeakerProfile.objects.filter(event=self.request.event
+            )
+            .select_related("user", "event")
+            .order_by("user__name")
+        )
+        qs = self.filter_queryset(qs)
+        all_submissions = list(self.request.event.submissions.all().prefetch_related("speakers"))
+        for profile in qs:
+            profile.talks = [
+                submission for submission in all_submissions if profile.user in submission.speakers.all()
             ]
         return qs
 

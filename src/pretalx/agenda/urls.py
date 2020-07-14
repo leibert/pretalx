@@ -62,12 +62,14 @@ urlpatterns = [
                 *get_schedule_urls("^schedule/v/(?P<version>.+)", "versioned-"),
                 url(r"^sneak/$", sneakpeek.SneakpeekView.as_view(), name="sneak"),
                 url(r"^speaker/$", talk.SpeakerList.as_view(), name="speakers"),
+                url(r"^speaker_hope/$", talk.SpeakerList_HOPE.as_view(), name="speakers_hope"),
                 url(
                     r"^speaker/by-id/(?P<pk>\d+)/$",
                     speaker.SpeakerRedirect.as_view(),
                     name="speaker.redirect",
                 ),
                 url(r"^talk/$", talk.TalkList.as_view(), name="talks"),
+                url(r"^talk_hope/$", talk.TalkList_hope.as_view(), name="talks_hope"),
                 url(r"^talk/(?P<slug>\w+)/$", talk.TalkView.as_view(), name="talk"),
                 url(
                     r"^talk/(?P<slug>\w+)/feedback/$",
