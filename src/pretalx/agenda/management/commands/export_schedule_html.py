@@ -129,13 +129,10 @@ def get_mediastatic_content(url):
     elif url.startswith(settings.MEDIA_URL):
         local_path = settings.MEDIA_ROOT / url[len(settings.MEDIA_URL) :]
     else:
-        pass
+        raise FileNotFoundError()
 
-    try:
-        with open(local_path, "rb") as f:
-            return f.read()
-    except:
-        pass
+    with open(local_path, "rb") as f:
+        return f.read()
 
 
 def export_event(event, destination):
