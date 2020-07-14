@@ -41,12 +41,14 @@ def fake_admin(event):
 def find_assets(html):
     """Find URLs of images, style sheets and scripts included in `html`."""
     soup = BeautifulSoup(html, "lxml")
-
-    for asset in soup.find_all(["script", "img"]):
-        yield asset.attrs["src"]
-    for asset in soup.find_all(["link"]):
-        if asset.attrs["rel"][0] in ["icon", "stylesheet"]:
-            yield asset.attrs["href"]
+    try:
+        for asset in soup.find_all(["script", "img"]):
+            yield asset.attrs["src"]
+        for asset in soup.find_all(["link"]):
+            if asset.attrs["rel"][0] in ["icon", "stylesheet"]:
+                yield asset.attrs["href"]
+    except:
+        pass
 
 
 def find_urls(css):
@@ -73,6 +75,7 @@ def event_exporter_urls(event):
     for _, exporter in register_data_exporters.send(event):
         if exporter.public:
             yield exporter(event).urls.base
+            yield exporter(event).urls.base
 
 
 def schedule_version_urls(event):
@@ -86,8 +89,10 @@ def event_urls(event):
     yield from schedule_version_urls(event)
     yield event.urls.sneakpeek
     yield event.urls.talks
+    yield event.urls.talks_hope
     yield from event_talk_urls(event)
     yield event.urls.speakers
+    yield event.urls.speakers_hope
     yield from event_speaker_urls(event)
     yield from event_exporter_urls(event)
     yield event.urls.changelog
