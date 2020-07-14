@@ -131,8 +131,11 @@ def get_mediastatic_content(url):
     else:
         pass
 
-    with open(local_path, "rb") as f:
-        return f.read()
+    try:
+        with open(local_path, "rb") as f:
+            return f.read()
+    except:
+        pass
 
 
 def export_event(event, destination):
