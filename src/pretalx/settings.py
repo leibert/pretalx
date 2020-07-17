@@ -25,7 +25,7 @@ CONFIG = config
 ##
 
 DEBUG = config.getboolean("site", "debug")
-DEBUG = True
+# DEBUG = True
 
 
 ## DIRECTORY SETTINGS
@@ -155,7 +155,6 @@ else:
 
 ## TASK RUNNER SETTINGS
 HAS_CELERY = bool(config.get("celery", "broker", fallback=None))
-HAS_CELERY = False
 if HAS_CELERY:
     CELERY_BROKER_URL = config.get("celery", "broker")
     CELERY_RESULT_BACKEND = config.get("celery", "backend")
