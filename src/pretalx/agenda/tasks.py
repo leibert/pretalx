@@ -12,6 +12,8 @@ LOGGER = logging.getLogger(__name__)
 def export_schedule_html(*, event_id: int, make_zip=True):
     from django.core.management import call_command
 
+    logging.info(f"ASYNC EXPORT TASK")
+
     with scopes_disabled():
         event = (
             Event.objects.prefetch_related("submissions").filter(pk=event_id).first()
