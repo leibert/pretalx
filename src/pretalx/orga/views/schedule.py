@@ -99,7 +99,7 @@ class ScheduleExportTriggerView(EventPermissionRequired, View):
 
 
 class ScheduleExportDownloadView(EventPermissionRequired, View):
-    permission_required = "orga.view_schedule"
+    permission_required = "agenda.view_schedule"
 
     def get(self, request, event):
         try:
