@@ -47,6 +47,28 @@
     </div>
     {% endif %}
     
+    <div id="menutop">
+      <nav>
+        <ul class="sitemenu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="keynotes.html">Keynotes</a></li>
+          <li><a href="lodging.html">Lodging</a></li>
+          <li><a href="travel.html">Travel</a></li>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="speakers.html">Speakers</a></li>
+          <li><a href="workshops.html">Workshops</a></li>
+          <li><a href="sponsor.html">Sponsor</a></li>
+          <li><a href="volunteer.html">Volunteer</a></li>
+          <li><a href="https://cyberpunk.hope.net">Contest</a></li>
+          <li><a href="graphics.html">Graphics</a></li>
+          <li><a href="codeofconduct.html">Code of Conduct</a></li>
+          <li><a href="https://wiki.hope.net">Wiki</a></li>
+        </ul>
+      </nav>
+    </div>
     
     <div id="pagehead">
       <header>
@@ -68,32 +90,33 @@
                 {% block content %}
                 {% endblock %}
             </main>
-        </div>
-        <footer>
-            {% if is_html_export %}
-            <div id="exporttimestamp" class="text-muted">
-                {% now "Y-m-d H:i T" as timestamp %}
-                {% blocktrans trimmed %}
-                    This is a static export generated at {{ timestamp }}
-                {% endblocktrans %}
-            </div>
-            {% endif %}
-            <a href="http://pretalx.com" target="_blank" rel="noopener">
-                <img src="{% static "common/img/logo.svg" %}" alt="{% trans "The pretalx logo" %}">
-            </a>
-            {% if request.event %}
-                &middot;
-                <a href="mailto:{{ request.event.email }}">{% trans "Contact us" %}</a>
-            {% endif %}
-            {% if request.event.settings.imprint_url %}
-                &middot;
-                <a href="{{ request.event.settings.imprint_url }}" target="_blank" rel="noopener">{% trans "Imprint" %}</a>
-            {% endif %}
-            {% for footer in footer_links %}
-                &middot;
-                <a href="{{ footer.link }}">{{ footer.label }}</a>
-            {% endfor %}
-        </footer>
+        </div>  
     </div>
-</body>
+    <div id="menubottom">
+        <nav>
+            <ul class="sitemenu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="keynotes.html">Keynotes</a></li>
+            <li><a href="lodging.html">Lodging</a></li>
+            <li><a href="travel.html">Travel</a></li>
+            <li><a href="schedule.html">Schedule</a></li>
+            <li><a href="speakers.html">Speakers</a></li>
+            <li><a href="workshops.html">Workshops</a></li>
+            <li><a href="sponsor.html">Sponsor</a></li>
+            <li><a href="volunteer.html">Volunteer</a></li>
+            <li><a href="https://cyberpunk.hope.net">Contest</a></li>
+            <li><a href="graphics.html">Graphics</a></li>
+            <li><a href="codeofconduct.html">Code of Conduct</a></li>
+            <li><a href="https://wiki.hope.net">Wiki</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div id="pagefoot">
+        <div class="floatright"><a href="https://twitter.com/hopeconf">@hopeconf</a></div>
+        <div class="floatleft"><a href="https://www.hope.net/">hope.net</a></div>
+    </div>
+  </body>
 </html>
