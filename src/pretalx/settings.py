@@ -24,8 +24,8 @@ CONFIG = config
 # Search for "## {AREA} SETTINGS" to navigate this file
 ##
 
-# DEBUG = config.getboolean("site", "debug")
-DEBUG = True
+DEBUG = config.getboolean("site", "debug")
+# DEBUG = True
 
 
 ## DIRECTORY SETTINGS

@@ -89,10 +89,10 @@ def event_urls(event):
     yield from schedule_version_urls(event)
     yield event.urls.sneakpeek
     yield event.urls.talks
-    # yield event.urls.talks_hope
+    yield event.urls.talks_hope
     yield from event_talk_urls(event)
     yield event.urls.speakers
-    # yield event.urls.speakers_hope
+    yield event.urls.speakers_hope
     yield from event_speaker_urls(event)
     yield from event_exporter_urls(event)
     yield event.urls.changelog
@@ -149,8 +149,11 @@ def export_event(event, destination):
 
             logging.info(f"Exporting {len(urls)} pages")
             for url in map(get_path, urls):
-                content = dump_content(destination, url, get)
-                assets |= set(map(get_path, find_assets(content)))
+                try:
+                    content = dump_content(destination, url, get)
+                    assets |= set(map(get_path, find_assets(content)))
+                except:
+                    pass
 
             css_assets = set()
 
