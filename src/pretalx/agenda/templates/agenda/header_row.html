@@ -11,7 +11,7 @@
             <span>{% trans "Version" %} {{ schedule.version|default:"–" }}</span>
             <a href="{{ request.event.urls.changelog }}" class="btn btn-outline-info btn-sm" title="{% trans "Changelog" %}"><i class="fa fa-clock-o"></i></a>
             <a href="{{ request.event.urls.feed }}" class="btn btn-outline-info btn-sm" title="{% trans "Feed" %}"><i class="fa fa-feed"></i></a>
-            {% comment %} <div class="dropdown">
+            <div class="dropdown">
                 <button class="btn btn-sm btn-outline-info dropdown-toggle" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-code"></i>
                 </button>
@@ -35,7 +35,7 @@
                     </a>
                     {% endif %}{% endfor %}
                 </div>
-            </div> {% endcomment %}
+            </div>
         {% endif %}
         {% if not is_html_export %}
         <form class="search">
