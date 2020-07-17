@@ -70,31 +70,26 @@
       </nav>
     </div>
     
-    <div id="pagehead">
-      <header>
-        <h1 class="headline">[HOPE 2020] Speakers
-        </h1>
-      </header>
-    </div>
-        <div class="container{% block container_width %}{% endblock %}" id="main-container">
-        <div id="pagecontent">
-      <article>
-            <div class="card" id="main-card">
-                <main>
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
 
-                    {% block content %}
-                    {% endblock %}
-                </main>
-            </div>  
+    <div class="container{% block container_width %}{% endblock %}" id="main-container">
+        <div id="pagecontent">
+            <article>
+                <div class="card" id="main-card">
+                    <main>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% block content %}
+                        {% endblock %}
+                    </main>
+                </div>  
+            </article>
         </div>
-        </article>
     </div>
 
     <div id="menubottom">
