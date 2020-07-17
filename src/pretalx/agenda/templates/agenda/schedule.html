@@ -15,7 +15,7 @@
 <span id="offline-vars" data-event="/{{ request.event.urls.schedule }}/"></span>
 
 {% if request.event.settings.use_tracks and request.event.tracks.count > 1 %}
-<div id="legend">
+<!--<div id="legend">
   <i class="fa fa-dot-circle-o"></i> ?
   <ul class="tracks">
     {% for track in request.event.tracks.all %}
@@ -23,6 +23,7 @@
     {% endfor %}
   </ul>
 </div>
+//-->
 {% endif %}
 
 <div id="fahrplan">
