@@ -198,6 +198,9 @@ class Command(BaseCommand):
             except Event.DoesNotExist:
                 raise CommandError(f'Could not find event with slug "{event_slug}".')
 
+        logging.info(f"STARTING EXPORT FOR {event.name}")
+        
+
         with scope(event=event):
             logging.info(f"Exporting {event.name}")
             export_dir = get_export_path(event)
