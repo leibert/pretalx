@@ -41,14 +41,14 @@ def fake_admin(event):
 def find_assets(html):
     """Find URLs of images, style sheets and scripts included in `html`."""
     soup = BeautifulSoup(html, "lxml")
-    try:
-        for asset in soup.find_all(["script", "img"]):
-            yield asset.attrs["src"]
-        for asset in soup.find_all(["link"]):
-            if asset.attrs["rel"][0] in ["icon", "stylesheet"]:
-                yield asset.attrs["href"]
-    except:
-        pass
+    # try:
+    for asset in soup.find_all(["script", "img"]):
+        yield asset.attrs["src"]
+    for asset in soup.find_all(["link"]):
+        if asset.attrs["rel"][0] in ["icon", "stylesheet"]:
+            yield asset.attrs["href"]
+    # except:
+        # pass
 
 
 def find_urls(css):
@@ -149,11 +149,11 @@ def export_event(event, destination):
 
             logging.info(f"Exporting {len(urls)} pages")
             for url in map(get_path, urls):
-                try:
-                    content = dump_content(destination, url, get)
-                    assets |= set(map(get_path, find_assets(content)))
-                except:
-                    pass
+                # try:
+                content = dump_content(destination, url, get)
+                assets |= set(map(get_path, find_assets(content)))
+                # except:
+                    # pass
 
             css_assets = set()
 

@@ -191,6 +191,7 @@ DATABASES = {
 
 ## LOGGING SETTINGS
 loglevel = "DEBUG" if DEBUG else "INFO"
+loglevel = "DEBUG"
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
