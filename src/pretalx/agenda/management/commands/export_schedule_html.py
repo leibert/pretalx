@@ -110,7 +110,7 @@ def get_content(response):
 
 
 def dump_content(destination, path, getter):
-    logging.debug(path)
+    logging.info(path)
     content = getter(path)
     if path.endswith("/"):
         path = path + "index.html"
