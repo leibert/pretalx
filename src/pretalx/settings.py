@@ -25,7 +25,7 @@ CONFIG = config
 ##
 
 DEBUG = config.getboolean("site", "debug")
-# DEBUG = True
+DEBUG = True
 
 
 ## DIRECTORY SETTINGS
