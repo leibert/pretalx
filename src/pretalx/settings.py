@@ -423,7 +423,7 @@ BOOTSTRAP4 = {
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 DEBUG_TOOLBAR_CONFIG = {"JQUERY_URL": ""}
 COMPRESS_ENABLED = COMPRESS_OFFLINE = not DEBUG
-COMPRESS_ENABLED = False
+# COMPRESS_ENABLED = False
 COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
 COMPRESS_CSS_FILTERS = (
     # CssAbsoluteFilter is incredibly slow, especially when dealing with our _flags.scss
