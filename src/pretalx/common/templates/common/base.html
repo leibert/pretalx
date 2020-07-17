@@ -21,7 +21,7 @@
 
     {% compress css %}
         <link rel="stylesheet" type="text/css" href="{% static "vendored/fullcalendar/fullcalendar.min.css" %}"/>
-        <link rel="stylesheet" type="text/x-scss" href="{% static "cfp/scss/main.scss" %}"/>
+        {% comment %} <link rel="stylesheet" type="text/x-scss" href="{% static "cfp/scss/main.scss" %}"/> {% endcomment %}
         <link rel="stylesheet" type="text/x-scss" href="{% static "agenda/scss/main.scss" %}" />
     {% endcompress %}
     {% if request.event and request.event.custom_css %}<link rel="stylesheet" type="text/css" href="{{ request.event.custom_css.url }}"/>{% endif %}
