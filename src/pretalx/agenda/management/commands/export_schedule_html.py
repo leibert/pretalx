@@ -29,7 +29,7 @@ def fake_admin(event):
             try:
                 # Try getting the file from disk directly first, …
                 return get_mediastatic_content(url)
-            except FileNotFoundError:
+            except:
                 # … then fall back to asking the views.
                 response = client.get(url, is_html_export=True, HTTP_ACCEPT="text/html")
                 content = get_content(response)
@@ -131,11 +131,11 @@ def get_mediastatic_content(url):
     else:
         pass
 
-    try:
-        with open(local_path, "rb") as f:
-            return f.read()
-    except:
-        pass
+    # try:
+    with open(local_path, "rb") as f:
+        return f.read()
+    # except:
+        # pass
 
 
 def export_event(event, destination):
@@ -149,10 +149,11 @@ def export_event(event, destination):
 
             logging.info(f"Exporting {len(urls)} pages")
             for url in map(get_path, urls):
-                # try:
-                content = dump_content(destination, url, get)
-                assets |= set(map(get_path, find_assets(content)))
-                # except:
+                try:
+                    content = dump_content(destination, url, get)
+                    assets |= set(map(get_path, find_assets(content)))
+                except:
+                    logging.info(f"failed {url}")
                     # pass
 
             css_assets = set()
