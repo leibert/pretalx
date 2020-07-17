@@ -85,7 +85,7 @@ class ScheduleExportTriggerView(EventPermissionRequired, View):
             )
         else:
             
-            # export_schedule_html(event_id=self.request.event.id)
+            export_schedule_html(event_id=self.request.event.id)
 
             self.request.event.cache.set("rebuild_schedule_export", True, None)
             messages.success(
