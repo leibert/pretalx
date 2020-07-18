@@ -2,14 +2,14 @@
 
 <nav id="schedule-nav"{% if with_margin %} class="m-3"{% endif %}>
     <div class="navigation">
-        <a href="{{ request.event.urls.schedule }}" class="btn btn-outline-success {% if "/schedule/" in request.path %} active{% endif %}"><i class="fa fa-calendar"></i> {% trans "Schedule" %}
-        </a><a href="{{ request.event.urls.talks }}" class="btn btn-outline-success {% if "/talk/" in request.path %} active{% endif %}"><i class="fa fa-comments-o"></i> {% trans "Talks" %}
-        </a><a href="{{ request.event.urls.speakers }}" class="btn btn-outline-success {% if "/speaker/" in request.path %} active{% endif %}"><i class="fa fa-group"></i> {% trans "Speakers" %}</a>
+        {% comment %} <a href="{{ request.event.urls.schedule }}" class="btn btn-outline-success {% if "/schedule/" in request.path %} active{% endif %}"><i class="fa fa-calendar"></i> {% trans "Schedule" %} {% endcomment %}
+        {% comment %} </a><a href="{{ request.event.urls.talks }}" class="btn btn-outline-success {% if "/talk/" in request.path %} active{% endif %}"><i class="fa fa-comments-o"></i> {% trans "Talks" %} {% endcomment %}
+        {% comment %} </a><a href="{{ request.event.urls.speakers }}" class="btn btn-outline-success {% if "/speaker/" in request.path %} active{% endif %}"><i class="fa fa-group"></i> {% trans "Speakers" %}</a> {% endcomment %}
     </div>
     <div class="header-right">
         {% if with_extra %}
-            <span>{% trans "Version" %} {{ schedule.version|default:"–" }}</span>
-            <a href="{{ request.event.urls.changelog }}" class="btn btn-outline-info btn-sm" title="{% trans "Changelog" %}"><i class="fa fa-clock-o"></i></a>
+            {% comment %} <span>{% trans "Version" %} {{ schedule.version|default:"–" }}</span> {% endcomment %}
+            {% comment %} <a href="{{ request.event.urls.changelog }}" class="btn btn-outline-info btn-sm" title="{% trans "Changelog" %}"><i class="fa fa-clock-o"></i></a> {% endcomment %}
             <a href="{{ request.event.urls.feed }}" class="btn btn-outline-info btn-sm" title="{% trans "Feed" %}"><i class="fa fa-feed"></i></a>
             <div class="dropdown">
                 <button class="btn btn-sm btn-outline-info dropdown-toggle" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

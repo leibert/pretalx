@@ -5,13 +5,16 @@
 
 {% block container_width %} {% if max_rooms > 6 %}container-wide{% elif max_rooms > 3 %}container-semi-wide{% else %}container-narrow{% endif %}{% endblock %}
 
+
+
 {% block agenda_custom_header %}
-{% compress js %}
-<script src="{% static 'common/js/tabbed.js' %}"></script>
-{% endcompress %}
 {% endblock %}
 
 {% block agenda_content %}
+{% compress js %}
+<script src="{% static 'common/js/tabbed.js' %}"></script>
+{% endcompress %}
+
 <span id="offline-vars" data-event="/{{ request.event.urls.schedule }}/"></span>
 
 {% if request.event.settings.use_tracks and request.event.tracks.count > 1 %}
