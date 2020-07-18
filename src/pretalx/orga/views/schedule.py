@@ -90,7 +90,7 @@ class ScheduleExportTriggerView(EventPermissionRequired, View):
         else:
             
             # export_schedule_html(event_id=self.request.event.id)
-            logging.info(f"SETTING EXPORT ASYNC EVENT FOR {event.name}")
+            logging.info(f"SETTING EXPORT ASYNC EVENT FOR {event}")
 
             self.request.event.cache.set("rebuild_schedule_export", True, None)
             messages.success(
