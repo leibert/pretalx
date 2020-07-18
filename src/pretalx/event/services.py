@@ -10,6 +10,9 @@ from pretalx.celery_app import app
 from pretalx.common.signals import periodic_task
 from pretalx.event.models import Event
 
+import logging
+LOGGER = logging.getLogger(__name__)
+
 
 @app.task()
 def task_periodic_event_services(event_slug):
@@ -64,6 +67,8 @@ def task_periodic_schedule_export(event_slug):
             .first()
         )
     with scope(event=event):
+        logging.info(f"in scope checking exports for {event.name}")
+        
         zip_path = get_export_zip_path(event)
         last_time = event.cache.get("last_schedule_rebuild")
         _now = now()
@@ -72,8 +77,13 @@ def task_periodic_schedule_export(event_slug):
         #     return
         # if last_time and _now - last_time < dt.timedelta(hours=1):
         #     return
-        if last_time and _now - last_time < dt.timedelta(minutes=5):
+        if last_time and _now - last_time < dt.timedelta(minutes=15):
              return
+
+        logging.info(f"rebuild?")
+        logging.info(event.cache.get("rebuild_schedule_export"))
+
+
         should_rebuild_schedule = (
             event.cache.get("rebuild_schedule_export") or not zip_path.exists()
         )

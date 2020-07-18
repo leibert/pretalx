@@ -33,6 +33,10 @@ from pretalx.schedule.forms import QuickScheduleForm, RoomForm
 from pretalx.schedule.models import Availability, Room, TalkSlot
 from pretalx.schedule.utils import guess_schedule_version
 
+import logging
+LOGGER = logging.getLogger(__name__)
+
+
 
 @method_decorator(csp_update(SCRIPT_SRC="'self' 'unsafe-eval'"), name="dispatch")
 class ScheduleView(EventPermissionRequired, TemplateView):
@@ -86,7 +90,7 @@ class ScheduleExportTriggerView(EventPermissionRequired, View):
         else:
             
             # export_schedule_html(event_id=self.request.event.id)
-            # logging.info(f"SETTING EXPORT ASYNC EVENT FOR {event.name}")
+            logging.info(f"SETTING EXPORT ASYNC EVENT FOR {event.name}")
 
             self.request.event.cache.set("rebuild_schedule_export", True, None)
             messages.success(
