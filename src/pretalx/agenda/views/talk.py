@@ -37,7 +37,7 @@ class TalkList(EventPermissionRequired, Filterable, ListView):
             self.filter_queryset(self.request.event.talks)
             .select_related("event")
             .prefetch_related("speakers")
-            .distinct()
+            .distinct().exclude(submission_type_id=4)
         )
 
     @context
