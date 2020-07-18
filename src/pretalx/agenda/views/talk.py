@@ -22,7 +22,7 @@ from pretalx.common.phrases import phrases
 from pretalx.person.models.profile import SpeakerProfile
 from pretalx.schedule.models import Schedule, TalkSlot
 from pretalx.submission.forms import FeedbackForm
-from pretalx.submission.models import QuestionTarget, Submission, SubmissionStates
+from pretalx.submission.models import QuestionTarget, Submission, SubmissionStates, SubmissionType
 
 
 class TalkList(EventPermissionRequired, Filterable, ListView):
@@ -43,6 +43,26 @@ class TalkList(EventPermissionRequired, Filterable, ListView):
     @context
     def search(self):
         return self.request.GET.get("q")
+
+class WorkshopList(EventPermissionRequired, Filterable, ListView):
+    context_object_name = "talks"
+    model = Submission
+    template_name = "agenda/talks.html"
+    permission_required = "agenda.view_schedule"
+    default_filters = ("speakers__name__icontains", "title__icontains")
+
+    def get_queryset(self):
+        return (
+            self.filter_queryset(self.request.event.talks)
+            .select_related("event")
+            .prefetch_related("speakers")
+            .distinct().filter(submission_type_id=4)
+        )
+
+    @context
+    def search(self):
+        return self.request.GET.get("q")
+
 
 class TalkList_hope(EventPermissionRequired, Filterable, ListView):
     context_object_name = "talks"

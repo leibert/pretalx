@@ -77,7 +77,8 @@ def task_periodic_schedule_export(event_slug):
         # )
         if last_time and _now - last_time < dt.timedelta(minutes=5):
              return
-        event.cache.get("rebuild_schedule_export"
+        event.cache.get("rebuild_schedule_export")
+        
         if should_rebuild_schedule:
             event.cache.delete("rebuild_schedule_export")
             event.cache.set("last_schedule_rebuild", _now, None)

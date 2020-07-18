@@ -23,7 +23,7 @@
 <article>
     <h3 class="talk-title">
         <div class="heading-with-buttons">
-        {{ submission.title }}
+        {{ submission.title | rich_text }}
         <div class="buttons" id="talk-buttons">
             {% if submission.state == 'confirmed' %}
             <a class="btn btn-outline-primary" href="{{ submission.urls.ical }}">

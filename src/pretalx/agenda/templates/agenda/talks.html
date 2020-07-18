@@ -10,7 +10,7 @@
     {% for talk in talks %}
         <section>
             <h3 class="talk-title">
-                <a href="{{ talk.urls.public }}"> {{ quotation_open }}{{ talk.title }}{{ quotation_close }}</a>
+                <a href="{{ talk.urls.public }}"> {{ talk.title | rich_text }}</a>
                 <small>
                     {{ talk.display_speaker_names }} ·
                     <i>
