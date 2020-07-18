@@ -33,10 +33,13 @@
         <script defer src="{% static "vendored/moment-timezone-with-data-2012-2022.js" %}"></script>
     {% comment %} {% endcompress %} {% endcomment %}
     <link rel="stylesheet" type="text/css" href="https://www.hope.net/css/site.css">
+    <link rel="stylesheet" type="text/css" href="https://www.hope.net/css/site.css">
+    <link rel="stylesheet" type="text/css" href="{% static "common/scss/fontoverride.css" %}"></script>
+
        
 </head>
 <body>
-    <div id="topbar"><a name="top" href="index.html"><img src="https://www.hope.net/img/website_banner_white_on_transparent.png"></a></div>
+    <div id="topbar"><a name="top" href="https://www.hope.net/index.html"><img src="https://www.hope.net/img/website_banner_white_on_transparent.png"></a></div>
 
     {% if request.event and not request.event.is_public and not is_html_export %}
     <div id="event-nonpublic">
