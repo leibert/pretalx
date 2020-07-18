@@ -72,13 +72,13 @@ def task_periodic_schedule_export(event_slug):
         #     return
         # if last_time and _now - last_time < dt.timedelta(hours=1):
         #     return
-        # should_rebuild_schedule = (
-        #     event.cache.get("rebuild_schedule_export") or not zip_path.exists()
-        # )
         if last_time and _now - last_time < dt.timedelta(minutes=5):
              return
-        event.cache.get("rebuild_schedule_export")
-        
+        should_rebuild_schedule = (
+            event.cache.get("rebuild_schedule_export") or not zip_path.exists()
+        )
+
+
         if should_rebuild_schedule:
             event.cache.delete("rebuild_schedule_export")
             event.cache.set("last_schedule_rebuild", _now, None)
