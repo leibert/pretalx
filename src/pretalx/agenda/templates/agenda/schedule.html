@@ -55,14 +55,14 @@
     </span></div>
 
     {% include "agenda/header_row.html" with with_margin=True with_extra=True %}
-
+    <div style="text-align:center">All times for New York, NY / Eastern Daylight Time (GMT-4)</div>
     <div class="pretalx-tabbed"><div class="pretalx-tabbed-content">
         {% if day_count > 1 %}
         <div class="pretalx-tabs">
         {% for day in data %}
             <div class="pretalx-tab">
               <label class="pretalx-tab-label" for="{{ day.start.date|date:"c" }}">
-                  {{ day.start.date|date:"l" }}, {{ day.start.date|date:"DATE_FORMAT" }}
+                  {{ day.start.date|date:"l" }}, {{ day.start.date|date:"F j" }}
               </label>
             </div>
         {% endfor %}
@@ -135,7 +135,7 @@
                 </div>
             {% else %}
                 <div class="no-talks">
-                    {% blocktrans with current_day=day.start.date|date:'DATE_FORMAT' weekday=day.start.date|date:'l' trimmed %}
+                    {% blocktrans with current_day=day.start.date|date:"F j" weekday=day.start.date|date:'l' trimmed %}
                       No talks on {{ weekday }}, {{ current_day }}.
                     {% endblocktrans %}
                 </div>
