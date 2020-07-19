@@ -70,6 +70,8 @@ def task_periodic_schedule_export(event_slug):
         logging.info(f"in scope checking exports for {event.name}")
         
         zip_path = get_export_zip_path(event)
+        logging.info(f"last?")
+        logging.info(event.cache.get("last_schedule_rebuild"))
         last_time = event.cache.get("last_schedule_rebuild")
         _now = now()
         # if not event.settings.export_html_on_schedule_release:
