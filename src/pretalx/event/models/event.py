@@ -98,6 +98,10 @@ class Event(LogMixin, models.Model):
     """
 
     name = I18nCharField(max_length=200, verbose_name=_("Name"))
+    export = models.BooleanField(default=False)
+    lastExport =  models.DateField(blank=True, null=True)
+
+
     slug = models.SlugField(
         max_length=50,
         db_index=True,

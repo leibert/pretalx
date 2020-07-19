@@ -73,6 +73,7 @@ def task_periodic_schedule_export(event_slug):
         logging.info(f"last?")
         logging.info(event.cache.get("last_schedule_rebuild"))
         last_time = event.cache.get("last_schedule_rebuild")
+        last_time = event.lastExport
         _now = now()
         # if not event.settings.export_html_on_schedule_release:
         #     event.cache.delete("rebuild_schedule_export")
@@ -87,7 +88,8 @@ def task_periodic_schedule_export(event_slug):
 
 
         should_rebuild_schedule = (
-            event.cache.get("rebuild_schedule_export") or not zip_path.exists()
+            # event.cache.get("rebuild_schedule_export") or not zip_path.exists()
+            event.export or not zip_path.exists()
         )
 
 
@@ -96,6 +98,9 @@ def task_periodic_schedule_export(event_slug):
 
             event.cache.delete("rebuild_schedule_export")
             event.cache.set("last_schedule_rebuild", _now, None)
+            event.export=False
+            event.lastExport=now()
+            event.save()
             export_schedule_html.apply_async(kwargs={"event_id": event.id})
 
 

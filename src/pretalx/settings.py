@@ -155,7 +155,6 @@ else:
 
 ## TASK RUNNER SETTINGS
 HAS_CELERY = bool(config.get("celery", "broker", fallback=None))
-HAS_CELERY = False
 if HAS_CELERY:
     CELERY_BROKER_URL = config.get("celery", "broker")
     CELERY_RESULT_BACKEND = config.get("celery", "backend")
@@ -260,11 +259,10 @@ else:
 
 ## CACHE SETTINGS
 CACHES = {"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache"}}
-REAL_CACHE_USED = True
+REAL_CACHE_USED = False
 SESSION_ENGINE = None
 
 HAS_MEMCACHED = bool(os.getenv("PRETALX_MEMCACHE", ""))
-
 if HAS_MEMCACHED:
     REAL_CACHE_USED = True
     CACHES["default"] = {
