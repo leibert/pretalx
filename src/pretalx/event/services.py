@@ -91,7 +91,7 @@ def task_periodic_schedule_export(event_slug):
             # event.cache.get("rebuild_schedule_export") or not zip_path.exists()
             event.export or not zip_path.exists()
         )
-
+        # should_rebuild_schedule= True
 
         if should_rebuild_schedule:
             logging.info(f"rebuildIng SCHEUDLE!!!!")
@@ -99,7 +99,7 @@ def task_periodic_schedule_export(event_slug):
             event.cache.delete("rebuild_schedule_export")
             event.cache.set("last_schedule_rebuild", _now, None)
             event.export=False
-            event.lastExport=now()
+            event.lastExport=_now
             event.save()
             export_schedule_html.apply_async(kwargs={"event_id": event.id})
 
