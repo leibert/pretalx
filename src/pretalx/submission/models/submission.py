@@ -302,8 +302,13 @@ class Submission(LogMixin, GenerateCode, models.Model):
         for slot in self.event.wip_schedule.talks.filter(
             submission=self, start__isnull=False
         ):
+            # slot.duration=self.get_duration()
             slot.end = slot.start + dt.timedelta(minutes=self.get_duration())
             slot.save()
+
+            #update current slot
+            self.slot.end = self.slot.start + dt.timedelta(minutes=self.get_duration())
+            self.slot.save()
 
     update_duration.alters_data = True
 
