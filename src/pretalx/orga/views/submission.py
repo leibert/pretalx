@@ -764,6 +764,8 @@ class SubmissionContent(ActionFromUrl, SubmissionViewMixin, CreateOrUpdateView):
             action = "pretalx.submission." + ("create" if created else "update")
             form.instance.log_action(action, person=self.request.user, orga=True)
             self.request.event.cache.set("rebuild_schedule_export", True, None)
+            self.request.event.export=True
+            self.request.event.save()
         return redirect(self.get_success_url())
 
     def get_form_kwargs(self):

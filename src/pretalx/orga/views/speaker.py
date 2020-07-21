@@ -147,6 +147,8 @@ class SpeakerDetail(PermissionRequired, ActionFromUrl, CreateOrUpdateView):
             )
         if form.has_changed() or self.questions_form.has_changed():
             self.request.event.cache.set("rebuild_schedule_export", True, None)
+            self.request.event.export=True
+            self.request.event.save()
         messages.success(self.request, "The speaker profile has been updated.")
         return result
 

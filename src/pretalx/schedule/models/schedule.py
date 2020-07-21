@@ -104,6 +104,8 @@ class Schedule(LogMixin, models.Model):
                 export_schedule_html.apply_async(kwargs={"event_id": self.event.id})
             else:
                 self.event.cache.set("rebuild_schedule_export", True, None)
+                self.request.event.export=True
+                self.request.event.save()
         return self, wip_schedule
 
     freeze.alters_data = True
