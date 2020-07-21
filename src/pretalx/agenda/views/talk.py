@@ -37,14 +37,14 @@ class TalkList(EventPermissionRequired, Filterable, ListView):
             self.filter_queryset(self.request.event.talks)
             .select_related("event")
             .prefetch_related("speakers")
-            .distinct().exclude(submission_type_id=4).exclude(submission_type_id=5).order_by('title')
+            .distinct().include(submission_type_id=3).order_by('title')
         )
 
     @context
     def search(self):
         return self.request.GET.get("q")
 
-class WorkshopList(EventPermissionRequired, Filterable, ListView):
+class AttractionsList(EventPermissionRequired, Filterable, ListView):
     context_object_name = "talks"
     model = Submission
     template_name = "agenda/talks.html"
@@ -56,7 +56,7 @@ class WorkshopList(EventPermissionRequired, Filterable, ListView):
             self.filter_queryset(self.request.event.talks)
             .select_related("event")
             .prefetch_related("speakers")
-            .distinct().filter(submission_type_id=4).order_by('title')
+            .distinct().filter(submission_type__gt=4).order_by('title')
         )
 
     @context
