@@ -68,7 +68,7 @@ urlpatterns = [
                     speaker.SpeakerRedirect.as_view(),
                     name="speaker.redirect",
                 ),
-                url(r"^workshops/$", talk.WorkshopList.as_view(), name="workshops"),
+                url(r"^workshops/$", talk.PerformanceList.as_view(), name="workshops"),
                 url(r"^performances/$", talk.PerformanceList.as_view(), name="performances"),
                 url(r"^talk/$", talk.TalkList.as_view(), name="talks"),
                 # url(r"^talk_hope/$", talk.TalkList_hope.as_view(), name="talks_hope"),
