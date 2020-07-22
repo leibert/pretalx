@@ -58,6 +58,11 @@ urlpatterns = [
                     widget.WidgetData.as_view(),
                     name="widget.data",
                 ),
+                url(
+                    r"^schedule/setTimeZone/",
+                    schedule.SetTimeZone,
+                    name="schedule.setTimeZone",
+                ),
                 *get_schedule_urls("^schedule"),
                 *get_schedule_urls("^schedule/v/(?P<version>.+)", "versioned-"),
                 url(r"^sneak/$", sneakpeek.SneakpeekView.as_view(), name="sneak"),

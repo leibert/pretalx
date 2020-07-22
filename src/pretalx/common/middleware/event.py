@@ -149,6 +149,10 @@ class EventPermissionMiddleware:
                 tzname = request.user.timezone
             else:
                 tzname = settings.TIME_ZONE
+            if request.session.get('timezone'):
+                tzname = request.session.get('timezone')
+    
+            
             timezone.activate(pytz.timezone(tzname))
             request.timezone = tzname
 

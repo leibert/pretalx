@@ -14,6 +14,7 @@ from django.http import (
     HttpResponsePermanentRedirect,
     HttpResponseRedirect,
 )
+from django.shortcuts import redirect
 from django.urls import resolve, reverse
 from django.utils.functional import cached_property
 from django.utils.timezone import now
@@ -25,6 +26,9 @@ from pretalx.common.console import LR, UD, get_seperator
 from pretalx.common.mixins.views import EventPermissionRequired
 from pretalx.common.signals import register_data_exporters
 from pretalx.common.utils import safe_filename
+
+from django.template import RequestContext
+
 
 
 class ScheduleDataView(EventPermissionRequired, TemplateView):
@@ -469,7 +473,11 @@ class ScheduleView(ScheduleDataView):
     def get_schedule_data(self):
         from pretalx.schedule.exporters import ScheduleData
 
-        timezone = pytz.timezone(self.request.event.timezone)
+        # if self.request.session.get('timezone'):
+        #     timezone = self.request.session.get('timezone')
+        # else:
+        timezone=self.request.event.timezone
+        timezone = pytz.timezone(timezone)
         data = ScheduleData(
             event=self.request.event,
             schedule=self.schedule,
@@ -510,3 +518,15 @@ class ScheduleView(ScheduleDataView):
 class ChangelogView(EventPermissionRequired, TemplateView):
     template_name = "agenda/changelog.html"
     permission_required = "agenda.view_schedule"
+
+def SetTimeZone(request, event):
+    print ("in TIMEZONE SETTER THING")
+    # print(request.POST["timezone"])
+    try:
+        #check if valid time zone
+        pytz.timezone(request.POST['newTimezone'])
+        request.session["timezone"]=request.POST['newTimezone']
+    except:
+        pass
+
+    return HttpResponse("tzset")
