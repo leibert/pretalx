@@ -46,7 +46,7 @@
         </div>
         <small>
             {% if talk_slots|length == 1 %}
-                {{ talk_slots.0.start.date|date:"c" }}, {{ talk_slots.0.start|date:"H:i" }}–{{ talk_slots.0.end|date:"H:i" }} ({{request.session.timezone}}), {{ talk_slots.0.room.name }}
+                {{ talk_slots.0.start.date|date:"c" }}, {{ talk_slots.0.start|date:"H:i" }}–{{ talk_slots.0.end|date:"H:i" }} {% if request.session.timezone%} ({{request.session.timezone}}) {%endif$}, {{ talk_slots.0.room.name }}
             {% endif %}
             {% if submission.do_not_record %}
                 <span class="fa-stack">
