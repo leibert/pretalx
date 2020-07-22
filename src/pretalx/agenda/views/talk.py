@@ -67,7 +67,7 @@ class AttractionsList(EventPermissionRequired, Filterable, ListView):
 class WorkshopList(EventPermissionRequired, Filterable, ListView):
     context_object_name = "talks"
     model = Submission
-    template_name = "agenda/talks.html"
+    template_name = "agenda/workshops.html"
     permission_required = "agenda.view_schedule"
     default_filters = ("speakers__name__icontains", "title__icontains")
 
