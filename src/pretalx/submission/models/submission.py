@@ -494,7 +494,7 @@ class Submission(LogMixin, GenerateCode, models.Model):
 
     @cached_property
     def remainingSeats(self):
-        if self.attendeeRSVP >=0 and self.capacity >= 0:
+        if self.attendeeRSVP != None and self.capacity != None:
             return self.capacity - self.attendeeRSVP
         else:
             return 0
