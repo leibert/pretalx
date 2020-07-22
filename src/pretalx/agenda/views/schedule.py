@@ -473,10 +473,10 @@ class ScheduleView(ScheduleDataView):
     def get_schedule_data(self):
         from pretalx.schedule.exporters import ScheduleData
 
-        # if self.request.session.get('timezone'):
-        #     timezone = self.request.session.get('timezone')
-        # else:
-        timezone=self.request.event.timezone
+        if self.request.session.get('timezone'):
+            timezone = self.request.session.get('timezone')
+        else:
+            timezone=self.request.event.timezone
         timezone = pytz.timezone(timezone)
         data = ScheduleData(
             event=self.request.event,

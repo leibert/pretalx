@@ -195,7 +195,7 @@
                                      id="{{ talk.submission.code|default:"break" }}"
                                      {% if not talk.submission.is_deleted %}title="{{ talk.submission.title|default:talk.description }} ({{ talk.submission.display_speaker_names|default:'' }})"{% endif %}
                                      style="height: {{ talk.height }}px; min-height: {% if talk.height >= 30 %}{{ talk.height }}{% else %}30{% endif %}px; top: {{ talk.top }}px;{% if request.event.settings.use_tracks and talk.submission.track %} border-color: {{ talk.submission.track.color }}{% endif %}"
-                                     data-time="{{ talk.start|date:"H:i" }}–{{ talk.end|date:"H:i" }} (NYC)"
+                                     data-time="{{ talk.start|date:"H:i" }}–{{ talk.end|date:"H:i" }}"
                                      data-start="{{ talk.start|date:"c" }}"
                                      data-end="{{ talk.end|date:"c" }}">
                                     <div class="pretalx-schedule-talk-content">
