@@ -496,6 +496,8 @@ class Submission(LogMixin, GenerateCode, models.Model):
     def remainingSeats(self):
         if self.attendeeRSVP != None and self.capacity != None:
             return self.capacity - self.attendeeRSVP
+        if self.attendeeRSVP == None and self.capacity != None:
+            return self.capacity
         else:
             return 0
 
