@@ -77,6 +77,7 @@ urlpatterns = [
                 url(r"^attractions/$", talk.AttractionsList.as_view(), name="performances"),
                 url(r"^talk/$", talk.TalkList.as_view(), name="talks"),
                 # url(r"^talk_hope/$", talk.TalkList_hope.as_view(), name="talks_hope"),
+                url(r"^talk/(?P<slug>\w+)/signup/$", talk.SignupView.as_view(), name="talk"),
                 url(r"^talk/(?P<slug>\w+)/$", talk.TalkView.as_view(), name="talk"),
                 url(
                     r"^talk/(?P<slug>\w+)/feedback/$",

@@ -179,13 +179,27 @@
             <br><br>
             <div class="speakers">
                 <div class="speaker-header">
-                    Workshop Signup:
+                Workshop Signup
                 </div>
-                <strong>Available Seats:</strong> {{submission.remainingSeats}}
-                <br>
-                <a class="btn btn-outline-primary" href="signup/">
-                    <i class="fa fa-user-plus" aria-hidden="true"></i> Signup
-                </a>
+                
+                {% if checkedAttendee == True or checkedAttendee == False %}
+                    {% if checkedAttendee == True%}
+                        <i class="fa fa-check fa-5x"></i>
+                        <br>Registered for Workshop
+                    {%else%}
+                        <i class="fa fa-times fa-5x"></i>
+                        <br>Email or Code Wrong
+                    {%endif%}
+                {%else%}
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <strong>Email:</strong> <input type="text" name="email"><br>
+                        <strong>Auth Code:</strong> <input type="text" name="authKey"><br>
+                        <input type="submit" value="Signup">
+                    </form>
+                {%endif%}
+
+      
             </div>
             {% endif %}
         </aside>

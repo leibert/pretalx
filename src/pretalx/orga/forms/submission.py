@@ -59,6 +59,8 @@ class SubmissionForm(ReadOnlyFlag, RequestRequire, forms.ModelForm):
             "content_locale",
             "do_not_record",
             "duration",
+            "capacity",
+            "attendees",
             "slot_count",
             "image",
             "is_featured",

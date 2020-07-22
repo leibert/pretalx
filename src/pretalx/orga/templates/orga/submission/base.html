@@ -64,4 +64,28 @@
 {% endif %}
 {% block submission_content %}
 {% endblock %}
+
+<script language="javascript"> 
+//check to see if there is a submission type box and if it's set to workshop
+    if ($('#id_submission_type') && parseInt($('#id_submission_type').val()) == 4) {
+        //show workshop options
+        $('#workshopFields').css('display', 'block');
+    }
+    //if submission type selector exists
+    if ($('#id_submission_type')) {
+        //bind to change event to see if workshop is selected
+        $('#id_submission_type').change(function () {
+        console.log("subsmission changed");
+        if (parseInt($('#id_submission_type').val()) == 4) {
+            $('#workshopFields').css('display', 'block');
+        }
+        else {
+            $('#workshopFields').css('display', 'none');
+        }
+        });
+    }
+
+</script>
+
+
 {% endblock %}

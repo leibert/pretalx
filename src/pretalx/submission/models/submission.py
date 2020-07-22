@@ -175,6 +175,21 @@ class Submission(LogMixin, GenerateCode, models.Model):
             "These notes are meant for the organiser and won't be made public."
         ),
     )
+    capacity = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_("Talk Capacity"),
+    )
+    attendeeRSVP = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_("Current RSVPs"),
+    )
+    attendees = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name=_("emails of signups"),
+    )
     internal_notes = models.TextField(
         null=True,
         blank=True,
@@ -476,6 +491,13 @@ class Submission(LogMixin, GenerateCode, models.Model):
         self.log_action("pretalx.submission.deleted", person=person, orga=True)
 
     remove.alters_data = True
+
+    @cached_property
+    def remainingSeats(self):
+        if self.attendeeRSVP >=0 and self.capacity >= 0:
+            return self.capacity - self.attendeeRSVP
+        else:
+            return 0
 
     @cached_property
     def uuid(self):

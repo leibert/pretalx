@@ -18,7 +18,9 @@
         {% bootstrap_field form.name layout='event' %}
         {% bootstrap_field form.description layout='event' %}
         {% bootstrap_field form.speaker_info layout='event' %}
-        {% bootstrap_field form.capacity addon_after='people' addon_after_class='input-group-append input-group-text' layout='event' %}
+        <div id="workshopFields" style="display:none">
+            {% bootstrap_field form.capacity addon_after='people' addon_after_class='input-group-append input-group-text' layout='event' %}
+        <div>
         {% bootstrap_field form.availabilities layout='event' %}
         {% include "orga/submit_row.html" %}
     </form>

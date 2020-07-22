@@ -23,6 +23,7 @@ from pretalx.person.models.profile import SpeakerProfile
 from pretalx.schedule.models import Schedule, TalkSlot
 from pretalx.submission.forms import FeedbackForm
 from pretalx.submission.models import QuestionTarget, Submission, SubmissionStates, SubmissionType
+from pretalx.submission.handleRSVP import checkAttendee
 
 
 class TalkList(EventPermissionRequired, Filterable, ListView):
@@ -205,6 +206,125 @@ class TalkView(PermissionRequired, TemplateView):
     def recording_iframe(self):
         return self.recording.get("iframe")
 
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        if self.recording.get("csp_header"):
+            response._csp_update = {"child-src": self.recording.get("csp_header")}
+        return response
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        qs = TalkSlot.objects.none()
+        schedule = Schedule.objects.none()
+        if self.request.event.current_schedule:
+            schedule = self.request.event.current_schedule
+            qs = schedule.talks.filter(is_visible=True).select_related("room")
+        elif self.request.is_orga:
+            schedule = self.request.event.wip_schedule
+            qs = schedule.talks.filter(room__isnull=False).select_related("room")
+        ctx["talk_slots"] = (
+            qs.filter(submission=self.submission)
+            .order_by("start")
+            .select_related("room")
+        )
+        result = []
+        other_submissions = (
+            schedule.slots.exclude(pk=self.submission.pk)
+            if schedule
+            else Submission.objects.none()
+        )
+        for speaker in self.submission.speakers.all():
+            speaker.talk_profile = speaker.event_profile(event=self.request.event)
+            speaker.other_submissions = other_submissions.filter(
+                speakers__in=[speaker]
+            ).select_related("event")
+            result.append(speaker)
+        ctx["speakers"] = result
+        return ctx
+
+    @context
+    @cached_property
+    def submission_description(self):
+        return (
+            self.submission.description
+            or self.submission.abstract
+            or _("The talk “{title}” at {event}").format(
+                title=self.submission.title, event=self.request.event.name
+            )
+        )
+
+    @context
+    @cached_property
+    def answers(self):
+        return self.submission.answers.filter(
+            question__is_public=True,
+            question__event=self.request.event,
+            question__target=QuestionTarget.SUBMISSION,
+        ).select_related("question")
+
+class SignupView(PermissionRequired, TemplateView):
+    model = Submission
+    slug_field = "code"
+    template_name = "agenda/talkSignup.html"
+    permission_required = "agenda.view_slot"
+
+    def get_object(self, queryset=None):
+        talk = (
+            self.request.event.talks.prefetch_related("slots", "answers", "resources")
+            .filter(code__iexact=self.kwargs["slug"],)
+            .first()
+        )
+        if talk:
+            return talk
+
+        if getattr(self.request, "is_orga", False):
+            talk = (
+                self.request.event.submissions.filter(code__iexact=self.kwargs["slug"],)
+                .prefetch_related("speakers", "slots", "answers", "resources")
+                .select_related("submission_type")
+                .first()
+            )
+            if talk:
+                return talk
+        raise Http404()
+
+    @context
+    @cached_property
+    def submission(self):
+        return self.get_object()
+
+    def get_permission_object(self):
+        return self.submission
+
+    @cached_property
+    def recording(self):
+        for __, response in register_recording_provider.send_robust(self.request.event):
+            if (
+                response
+                and not isinstance(response, Exception)
+                and getattr(response, "get_recording", None)
+            ):
+                recording = response.get_recording(self.submission)
+                if recording and recording["iframe"]:
+                    return recording
+        return {}
+
+    @context
+    def recording_iframe(self):
+        return self.recording.get("iframe")
+    
+    def post(self, request, *args, **kwargs):
+        talk=self.get_object()
+        response = super().get(request, *args, **kwargs)
+        # check to see if signup info passed
+        if self.request.POST:
+            print("info recieved")
+            if checkAttendee(self.request, talk):
+                response.context_data['checkedAttendee']=True
+            else:
+                response.context_data['checkedAttendee']=False
+        return response
+    
     def get(self, request, *args, **kwargs):
         response = super().get(request, *args, **kwargs)
         if self.recording.get("csp_header"):
