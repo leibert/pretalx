@@ -38,10 +38,12 @@ def registerAttendee(attendeeInfo, submission):
     else:
         attendees = submission.attendees + "\n" + attendeeInfo
         submission.attendees = attendees
+
     if submission.attendeeRSVP == None:
-        submission.attendeeRSVP = 0
+        submission.attendeeRSVP = 1
     else:
         submission.attendeeRSVP=submission.attendeeRSVP+1
+        
     submission.save()
 
     return True
