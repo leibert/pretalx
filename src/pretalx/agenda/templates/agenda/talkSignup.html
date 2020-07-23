@@ -183,7 +183,7 @@
                     Workshop Full<br>
                     <i class="fa fa-ban fa-5x" aria-hidden="true"></i>
                 {% else %}
-                    Workshop Signup
+                    Workshop Signup<br>
                     {% if checkedAttendee %}
                         {% if checkedAttendee == "2" %}
                             <i class="fa fa-check fa-5x"></i>
@@ -193,7 +193,7 @@
                             <br>Already Registered for Workshop
                         {%else%}
                             <i class="fa fa-times fa-5x"></i>
-                            <br>Email or Code Wrong
+                            <br>Invalid Registration
                         {%endif%}
                     {%else%}
                         <form method="POST" action="">
