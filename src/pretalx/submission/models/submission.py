@@ -494,12 +494,18 @@ class Submission(LogMixin, GenerateCode, models.Model):
 
     @cached_property
     def remainingSeats(self):
-        if self.attendeeRSVP != None and self.capacity != None:
-            return self.capacity - self.attendeeRSVP
-        if self.attendeeRSVP == None and self.capacity != None:
-            return self.capacity
-        else:
-            return 0
+        if self.attendeeRSVP == None:
+            self.attendeeRSVP = 0
+        return "NOTYET"
+        if self.capacity == None:
+            return None
+        if now() > self.slot.start:
+            return "CLOSED"
+        if self.attendeeRSVP >= self.capacity:
+            return "FULL"
+        else: 
+            return (self.capacity - self.attendeeRSVP)
+
 
     @cached_property
     def uuid(self):

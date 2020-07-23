@@ -178,7 +178,18 @@
             {% if submission.submission_type.id == 4 %}
             <br><br>
             <div class="speakers">
-                <div class="speaker-header">
+                <div class="speaker-header" style="text-align:center">
+                {% if submission.remainingSeats == "FULL" %}
+                    Workshop Full<br>
+                    <i class="fa fa-ban fa-5x" aria-hidden="true"></i>
+                {% elif submission.remainingSeats == "NOTYET" %}
+                    Workshop registration begins Friday.<br>
+                    <i class="fa fa-hourglass-half fa-5x" aria-hidden="true"></i>
+                {% elif submission.remainingSeats == "CLOSED" %}
+                    Workshop registration closed<br>
+                    <i class="fa fa-ban fa-5x" aria-hidden="true"></i>
+                {%else%}
+                    Workshop registration begins Friday.
                     Workshop Signup:
                 </div>
                 <strong>Available Seats:</strong> {{submission.remainingSeats}}
@@ -186,6 +197,7 @@
                 <a class="btn btn-outline-primary" href="signup/">
                     <i class="fa fa-user-plus" aria-hidden="true"></i> Signup
                 </a>
+                {%endif%}
             </div>
             {% endif %}
         </aside>

@@ -178,26 +178,33 @@
             {% if submission.submission_type.id == 4 %}
             <br><br>
             <div class="speakers">
-                <div class="speaker-header">
-                Workshop Signup
-                </div>
-                
-                {% if checkedAttendee == True or checkedAttendee == False %}
-                    {% if checkedAttendee == True%}
-                        <i class="fa fa-check fa-5x"></i>
-                        <br>Registered for Workshop
+                <div class="speaker-header" style="text-align:center">
+                {% if submission.remainingSeats == "FULL" %}
+                    Workshop Full<br>
+                    <i class="fa fa-ban fa-5x" aria-hidden="true"></i>
+                {% else %}
+                    Workshop Signup
+                    {% if checkedAttendee %}
+                        {% if checkedAttendee == "2" %}
+                            <i class="fa fa-check fa-5x"></i>
+                            <br>Registered for Workshop
+                        {% elif checkedAttendee == "3" %}
+                            <i class="fa fa-check fa-5x"></i>
+                            <br>Already Registered for Workshop
+                        {%else%}
+                            <i class="fa fa-times fa-5x"></i>
+                            <br>Email or Code Wrong
+                        {%endif%}
                     {%else%}
-                        <i class="fa fa-times fa-5x"></i>
-                        <br>Email or Code Wrong
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            <strong>Email:</strong> <input type="text" name="email"><br>
+                            <strong>Auth Code:</strong> <input type="text" name="authKey"><br>
+                            <input type="submit" value="Signup">
+                        </form>
                     {%endif%}
-                {%else%}
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                        <strong>Email:</strong> <input type="text" name="email"><br>
-                        <strong>Auth Code:</strong> <input type="text" name="authKey"><br>
-                        <input type="submit" value="Signup">
-                    </form>
                 {%endif%}
+                </div>
 
       
             </div>

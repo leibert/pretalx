@@ -18,15 +18,18 @@ def checkAttendee (request, submission):
         print(data)
 
         for entry in data:
-            if(email == entry[1]):
-                print("positive email match")
-                if(authKey == entry[2]):
-                    print("valid attendee add to list")
-                    registerAttendee(entry, submission)
-                    return True
-        return False
+            if(authKey == entry[2]):
+                print("valid attendee add to list")
+                if not registeredForWorkshop(entry, submission):
+                    if registerAttendee(entry, submission):
+                        return 2 #success
+                    else:
+                        return 1 #fail
+                else:
+                    return 3 #already registered
+        return 1 #fail
     except:
-        return False
+        return 1 #fail
 
 def registerAttendee(attendeeInfo, submission):
     attendeeInfo = str(attendeeInfo).replace("[","").replace("]","").replace("\'","")
@@ -42,3 +45,14 @@ def registerAttendee(attendeeInfo, submission):
     submission.save()
 
     return True
+
+def registeredForWorkshop(attendeeInfo, submission):
+    registerAttendees = submission.attendees.splitlines()
+    registerAttendees = csv.reader(registerAttendees, delimiter=',')
+
+    for registeredAttendee in registerAttendees:
+        print(registeredAttendee)
+        if registeredAttendee[2].strip() == attendeeInfo[2].strip():
+            print("already registered")
+            return True
+    return False

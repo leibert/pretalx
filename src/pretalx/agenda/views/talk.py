@@ -318,11 +318,7 @@ class SignupView(PermissionRequired, TemplateView):
         response = super().get(request, *args, **kwargs)
         # check to see if signup info passed
         if self.request.POST:
-            print("info recieved")
-            if checkAttendee(self.request, talk):
-                response.context_data['checkedAttendee']=True
-            else:
-                response.context_data['checkedAttendee']=False
+            response.context_data['checkedAttendee']=str(checkAttendee(self.request, talk))
         return response
     
     def get(self, request, *args, **kwargs):
