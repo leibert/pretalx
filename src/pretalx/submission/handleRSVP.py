@@ -57,16 +57,25 @@ def registerAttendee(attendeeInfo, submission):
     # attendeeInfo = str(attendeeInfo).replace("[","").replace("]","").replace("\'","")
     if submission.attendees is None:
         submission.attendees= attendeeInfo["name"] + " "+attendeeInfo["email"]+","+attendeeInfo["hashed"]
+        logging.info("fail Z1")   
     else:
         attendees = submission.attendees + "\n" + attendeeInfo["name"] + " "+attendeeInfo["email"]+","+attendeeInfo["hashed"]
         submission.attendees = attendees
+        logging.info("fail Z2")   
+
 
     if submission.attendeeRSVP == None:
         submission.attendeeRSVP = 1
+        logging.info("fail Z3")   
+
     else:
         submission.attendeeRSVP=submission.attendeeRSVP+1
-        
+        logging.info("fail Z5")   
+
+    logging.info("fail Z7")   
     submission.save()
+    logging.info("fail Z6")   
+
 
     return True
 
