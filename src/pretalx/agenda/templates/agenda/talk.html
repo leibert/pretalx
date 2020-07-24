@@ -178,6 +178,7 @@
             {% if submission.submission_type.id == 4 %}
             <br><br>
             <div class="speakers">
+            {{submission.remainingSeats}}
                 <div class="speaker-header" style="text-align:center">
                 {% if submission.remainingSeats == "FULL" %}
                     Workshop Full<br>
@@ -192,6 +193,7 @@
                     Workshop registration begins Friday.
                     Workshop Signup:
                 </div>
+                
                 <strong>Available Seats:</strong> {{submission.remainingSeats}}
                 <br>
                 <a class="btn btn-outline-primary" href="signup/">
