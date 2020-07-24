@@ -1,7 +1,8 @@
 import csv
 from pretalx.submission.models import Submission
 import hashlib
-
+import logging
+LOGGER = logging.getLogger(__name__)
 
 
 def checkAttendee (request, submission):
@@ -20,6 +21,10 @@ def checkAttendee (request, submission):
 
         print(request.POST['authKey'])
         print(authKey)
+        logging.info(authKey)
+        logging.info(attendeeInfo['name'])
+        logging.info(attendeeInfo['email'])
+        logging.info(submission)
         print("key done")
 
         with open('/var/pretalx/data/attendee-secret-codes-hashed') as file:
