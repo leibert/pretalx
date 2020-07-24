@@ -192,7 +192,7 @@
                 {%else%}
                     Workshop Signup:
                 </div>
-                {% elif submission.remainingSeats == "NOCAP" %}
+                {% if submission.remainingSeats == "NOCAP" %}
                  
                 {%else%}
                     <strong>Available Seats:</strong> {{submission.remainingSeats}}
