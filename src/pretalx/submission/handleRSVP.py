@@ -27,17 +27,20 @@ def checkAttendee (request, submission):
                 print(line.replace("-","").strip())
                 if(authKey == line.replace("-","").strip()):
                     print("valid attendee add to list")
-                    if not registeredForWorkshop(attendeeInfo, submission):
-                        if registerAttendee(attendeeInfo, submission):
-                            return 2 #success
-                        else:
-                            return 1 #fail
+                    if registeredForWorkshop(attendeeInfo, submission):
+                        return "3"
                     else:
-            
-                        return 3 #already registered
-        return 1 #fail
+                        print("registering attendee")
+                        if registerAttendee(attendeeInfo, submission):
+                            return "2" #success
+                        else:
+                            return "1" #fail
+            return "1"
     except:
+        print(e)
         return 1 #fail
+
+    return "1"
 
 def registerAttendee(attendeeInfo, submission):
     # attendeeInfo = str(attendeeInfo).replace("[","").replace("]","").replace("\'","")
@@ -57,12 +60,17 @@ def registerAttendee(attendeeInfo, submission):
     return True
 
 def registeredForWorkshop(attendeeInfo, submission):
-    registerAttendees = submission.attendees.splitlines()
-    registerAttendees = csv.reader(registerAttendees, delimiter=',')
 
-    for registeredAttendee in registerAttendees:
+    if submission.attendees == "":
+        ##field is currently empty
+        return False
+    registeredAttendees = submission.attendees.splitlines()
+    registeredAttendees = csv.reader(registeredAttendees, delimiter=',')
+
+    for registeredAttendee in registeredAttendees:
         print(registeredAttendee)
-        if registeredAttendee[1].strip() == attendeeInfo["hashed"].strip():
-            print("already registered")
-            return True
+        if registeredAttendee:
+            if registeredAttendee[1].strip() == attendeeInfo["hashed"].strip():
+                print("already registered")
+                return True
     return False
