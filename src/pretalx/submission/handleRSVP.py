@@ -84,6 +84,9 @@ def registerAttendee(attendeeInfo, submission):
 def registeredForWorkshop(attendeeInfo, submission):
     logging.info("in Y")   
 
+    if not submission.attendees:
+        return False
+        
     if submission.attendees == "":
         ##field is currently empty
         return False
