@@ -55,6 +55,8 @@ def checkAttendee (request, submission):
 
 def registerAttendee(attendeeInfo, submission):
     # attendeeInfo = str(attendeeInfo).replace("[","").replace("]","").replace("\'","")
+    logging.info("!!!!!!!!!!!!!!! IN Z")   
+
     if submission.attendees is None:
         submission.attendees= attendeeInfo["name"] + " "+attendeeInfo["email"]+","+attendeeInfo["hashed"]
         logging.info("fail Z1")   
