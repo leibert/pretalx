@@ -82,17 +82,22 @@ def registerAttendee(attendeeInfo, submission):
     return True
 
 def registeredForWorkshop(attendeeInfo, submission):
+    logging.info("in Y")   
 
     if submission.attendees == "":
         ##field is currently empty
         return False
-    registeredAttendees = submission.attendees.splitlines()
-    registeredAttendees = csv.reader(registeredAttendees, delimiter=',')
+    try:
+        registeredAttendees = submission.attendees.splitlines()
+        registeredAttendees = csv.reader(registeredAttendees, delimiter=',')
 
-    for registeredAttendee in registeredAttendees:
-        print(registeredAttendee)
-        if registeredAttendee:
-            if registeredAttendee[1].strip() == attendeeInfo["hashed"].strip():
-                print("already registered")
-                return True
+        for registeredAttendee in registeredAttendees:
+            print(registeredAttendee)
+            if registeredAttendee:
+                if registeredAttendee[1].strip() == attendeeInfo["hashed"].strip():
+                    print("already registered")
+                    return True
+    except:
+        #big assumption assume empty
+        return False
     return False
