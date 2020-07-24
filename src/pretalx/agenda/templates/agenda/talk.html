@@ -190,11 +190,13 @@
                     Workshop registration closed<br>
                     <i class="fa fa-ban fa-5x" aria-hidden="true"></i>
                 {%else%}
-                    Workshop registration begins Friday.
                     Workshop Signup:
                 </div>
-                
-                <strong>Available Seats:</strong> {{submission.remainingSeats}}
+                {% elif submission.remainingSeats == "NOCAP" %}
+                 
+                {%else%}
+                    <strong>Available Seats:</strong> {{submission.remainingSeats}}
+                {%endif%}
                 <br>
                 <a class="btn btn-outline-primary" href="signup/">
                     <i class="fa fa-user-plus" aria-hidden="true"></i> Signup
