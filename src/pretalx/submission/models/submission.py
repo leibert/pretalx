@@ -498,7 +498,7 @@ class Submission(LogMixin, GenerateCode, models.Model):
             self.attendeeRSVP = 0
         # return "NOTYET"
         if self.capacity == None:
-            return None
+            return "NOCAP"
         if now() > self.slot.start:
             return "CLOSED"
         if self.attendeeRSVP >= self.capacity:
