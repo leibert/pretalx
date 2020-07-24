@@ -33,17 +33,23 @@ def checkAttendee (request, submission):
                 if(authKey == line.replace("-","").strip()):
                     print("valid attendee add to list")
                     if registeredForWorkshop(attendeeInfo, submission):
+                        logging.info("already")
                         return "3"
                     else:
                         print("registering attendee")
                         if registerAttendee(attendeeInfo, submission):
+                            logging.info("sucess")
                             return "2" #success
                         else:
+                            logging.info("fail A")
                             return "1" #fail
+            logging.info("fail D")   
             return "1"
     except:
         # print(e)
-        return 1 #fail
+        logging.info("fail C")   
+        return "1" #fail
+
 
     return "1"
 
