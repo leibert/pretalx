@@ -37,7 +37,7 @@ def checkAttendee (request, submission):
                             return "1" #fail
             return "1"
     except:
-        print(e)
+        # print(e)
         return 1 #fail
 
     return "1"
