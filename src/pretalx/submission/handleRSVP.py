@@ -42,7 +42,7 @@ def checkAttendee (request, submission):
 def registerAttendee(attendeeInfo, submission):
     # attendeeInfo = str(attendeeInfo).replace("[","").replace("]","").replace("\'","")
     if submission.attendees is None:
-        submission.attendees= attendeeInfo
+        submission.attendees= attendeeInfo["name"] + " "+attendeeInfo["email"]+","+attendeeInfo["hashed"]
     else:
         attendees = submission.attendees + "\n" + attendeeInfo["name"] + " "+attendeeInfo["email"]+","+attendeeInfo["hashed"]
         submission.attendees = attendees
