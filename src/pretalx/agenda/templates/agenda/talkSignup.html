@@ -198,8 +198,10 @@
                     {%else%}
                         <form method="POST" action="">
                             {% csrf_token %}
-                            <strong>Email:</strong> <input type="text" name="email"><br>
                             <strong>Auth Code:</strong> <input type="text" name="authKey"><br>
+                            <br>
+                            <strong>Name:</strong> <input type="text" name="name"><br>
+                            <strong>Email:</strong> <input type="text" name="email"><br>
                             <input type="submit" value="Signup">
                         </form>
                     {%endif%}

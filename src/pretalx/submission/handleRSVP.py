@@ -1,5 +1,6 @@
 import csv
 from pretalx.submission.models import Submission
+import hashlib
 
 
 
@@ -7,36 +8,43 @@ def checkAttendee (request, submission):
     print("in register RSVP")
 
     try:
+        attendeeInfo={}
         print("check if valid attentt")
-        email = request.POST['email']
-        print("email")
-        authKey = request.POST['authKey']
-        print("key")
+        try:
+            attendeeInfo['name'] = request.POST['name']
+        except:
+            attendeeInfo['name'] = ""
+        attendeeInfo['email'] = request.POST['email']
+        authKey = hashlib.sha256(request.POST['authKey'].encode('utf-8')).hexdigest()
+        attendeeInfo['hashed']=authKey
 
-        with open('data/sampleAttendeeList.txt') as csvfile:
-            data = list(csv.reader(csvfile))
-        print(data)
+        print(request.POST['authKey'])
+        print(authKey)
+        print("key done")
 
-        for entry in data:
-            if(authKey == entry[2]):
-                print("valid attendee add to list")
-                if not registeredForWorkshop(entry, submission):
-                    if registerAttendee(entry, submission):
-                        return 2 #success
+        with open('/var/pretalx/data/attendee-secret-codes-hashed') as file:
+            for line in file:
+                print(line.replace("-","").strip())
+                if(authKey == line.replace("-","").strip()):
+                    print("valid attendee add to list")
+                    if not registeredForWorkshop(attendeeInfo, submission):
+                        if registerAttendee(attendeeInfo, submission):
+                            return 2 #success
+                        else:
+                            return 1 #fail
                     else:
-                        return 1 #fail
-                else:
-                    return 3 #already registered
+            
+                        return 3 #already registered
         return 1 #fail
     except:
         return 1 #fail
 
 def registerAttendee(attendeeInfo, submission):
-    attendeeInfo = str(attendeeInfo).replace("[","").replace("]","").replace("\'","")
+    # attendeeInfo = str(attendeeInfo).replace("[","").replace("]","").replace("\'","")
     if submission.attendees is None:
         submission.attendees= attendeeInfo
     else:
-        attendees = submission.attendees + "\n" + attendeeInfo
+        attendees = submission.attendees + "\n" + attendeeInfo["name"] + " "+attendeeInfo["email"]+","+attendeeInfo["hashed"]
         submission.attendees = attendees
 
     if submission.attendeeRSVP == None:
@@ -54,7 +62,7 @@ def registeredForWorkshop(attendeeInfo, submission):
 
     for registeredAttendee in registerAttendees:
         print(registeredAttendee)
-        if registeredAttendee[2].strip() == attendeeInfo[2].strip():
+        if registeredAttendee[1].strip() == attendeeInfo["hashed"].strip():
             print("already registered")
             return True
     return False
