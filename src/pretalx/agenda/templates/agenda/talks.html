@@ -14,7 +14,8 @@
                 <small>
                     {{ talk.display_speaker_names }} ·
                     <i>
-                        {{ talk.submission_type }}
+                        {% comment %} {{ talk.submission_type }} {% endcomment %}{% comment %} {{ talk.submission_type }} {% endcomment %}({{talk.slot.duration}} minutes)
+
                         {% if request.event.is_multilingual %}· {{ talk.get_content_locale_display }}{% endif %}
                     </i>
                 </small>
