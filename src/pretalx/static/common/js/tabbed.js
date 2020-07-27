@@ -14,7 +14,13 @@ const initTabs = () => {
     selectedTab = document.querySelector("input[name=tabs]")
     if (!selectedTab) return
   }
-  const fragment = window.location.hash.substr(1);
+  debugger
+  var fragment = window.location.hash.substr(1);
+  if(fragment==""){
+    //use today's date as a locator
+    var d = new Date();
+    fragment = d.toISOString().substr(0, 10);
+  }
   if (fragment) {
     selectedTab = document.querySelector("input[name=tabs][id='" + fragment + "']") || selectedTab
   }
