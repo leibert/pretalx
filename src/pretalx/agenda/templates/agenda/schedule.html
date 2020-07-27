@@ -180,7 +180,19 @@
                     <div class="pretalx-schedule-nowline"></div>
                     <div class="pretalx-schedule-time-column">
                         {% for hour in day.hours %}
-                            <div class="pretalx-schedule-hour">{{ hour }}</div>
+                            <div class="pretalx-schedule-hour">
+                              {% if hour == "23:00" %}
+                              <span style="color:white; background-color:#1a4c3b">
+                                {{day.start|date:"F j"}}
+                              </span>
+                              {% elif hour == "00:00" %}
+                              <span style="color:white; background-color:#1a4c3b">
+                                {{day.end|date:"F j"}}
+                              </span>
+                              {% endif %}
+                              {{ hour }}
+                            </div>
+
                         {% endfor %}
                     </div>
                     {% for room in day.rooms %}
