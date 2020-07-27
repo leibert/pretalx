@@ -189,17 +189,21 @@
                     Workshop registration closed<br>
                     <i class="fa fa-ban fa-5x" aria-hidden="true"></i>
                 {%else%}
-                    Workshop Signup:
+                    <!-- Workshop Signup: -->
+                    Joining Workshops:
                 </div>
-                {% if submission.remainingSeats == "NOCAP" %}
+                <!-- {% if submission.remainingSeats == "NOCAP" %}
                  
                 {%else%}
                     <strong>Available Seats:</strong> {{submission.remainingSeats}}
-                {%endif%}
-                <br>
-                <a class="btn btn-outline-primary" href="signup/">
+                {%endif%} -->
+                The link to the workshop room is posted in the HOPE Announcements matrix chat (#announcements:hope.net), shortly before the workshop begins.
+                <br><br>
+                Visit our <a href="https://wiki.hope.net/index.php?title=Matrix_How-To">Matrix How-To Wiki Page</a> for instructions on joining the conversation.
+
+                <!--<a class="btn btn-outline-primary" href="signup/">
                     <i class="fa fa-user-plus" aria-hidden="true"></i> Signup
-                </a>
+                </a>//-->
                 {%endif%}
             </div>
             {% endif %}
