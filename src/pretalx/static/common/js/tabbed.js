@@ -14,7 +14,6 @@ const initTabs = () => {
     selectedTab = document.querySelector("input[name=tabs]")
     if (!selectedTab) return
   }
-  debugger
   var fragment = window.location.hash.substr(1);
   if(fragment==""){
     //use today's date as a locator
