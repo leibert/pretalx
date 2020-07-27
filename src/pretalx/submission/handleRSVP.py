@@ -11,11 +11,15 @@ def checkAttendee (request, submission):
     try:
         attendeeInfo={}
         print("check if valid attentt")
+        if request.POST['email'] == "" or request.POST['authKey'] == "":
+            return "15"
+            
         try:
             attendeeInfo['name'] = request.POST['name']
         except:
             attendeeInfo['name'] = ""
         attendeeInfo['email'] = request.POST['email']
+
         authKey = hashlib.sha256(request.POST['authKey'].encode('utf-8')).hexdigest()
         attendeeInfo['hashed']=authKey
 

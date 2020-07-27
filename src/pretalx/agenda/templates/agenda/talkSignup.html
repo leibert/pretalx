@@ -183,8 +183,9 @@
                     Workshop Full<br>
                     <i class="fa fa-ban fa-5x" aria-hidden="true"></i>
                 {% else %}
+
                     Workshop Signup<br>
-                    {% if checkedAttendee %}
+                    {% if checkedAttendee and checkedAttendee != "15" %}
                         {% if checkedAttendee == "2" %}
                             <i class="fa fa-check fa-5x"></i>
                             <br>Registered for Workshop
@@ -196,9 +197,13 @@
                             <br>Invalid Registration
                         {%endif%}
                     {%else%}
+                        {% if checkedAttendee and checkedAttendee == "15" %}
+                            <i class="fa fa-question fa-5x"></i>
+                            <br>Email and Ticket Code Required<br><br>
+                        {% endif %}
                         <form method="POST" action="">
                             {% csrf_token %}
-                            <strong>Auth Code:</strong> <input type="text" name="authKey"><br>
+                            <strong>Ticket Code:</strong> <input type="text" name="authKey"><br>
                             <br>
                             <strong>Name:</strong> <input type="text" name="name"><br>
                             <strong>Email:</strong> <input type="text" name="email"><br>
