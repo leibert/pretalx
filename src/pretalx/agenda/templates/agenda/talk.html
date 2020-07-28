@@ -2,6 +2,7 @@
 {% load compress %}
 {% load i18n %}
 {% load rich_text %}
+{% load tz %}
 
 {% block title %}{{ submission.title }} ::{% endblock %}
 {% block meta_title %}{{ submission.title }}{% endblock %}
@@ -30,6 +31,7 @@
                 <i class="fa fa-calendar"></i> .ical
             </a>
             {% endif %}
+
             {% if request.user in submission.speakers.all %}
                 <a href="{{ submission.urls.user_base }}"
                         class="btn btn-info">
@@ -39,9 +41,14 @@
         </div>
         </div>
         <small>
-            {% if talk_slots|length == 1 %}
-                {{ talk_slots.0.start.date|date:"c" }}, {{ talk_slots.0.start|date:"H:i" }}–{{ talk_slots.0.end|date:"H:i" }}{% if request.session.timezone%} ({{request.session.timezone}}) {%endif%}, {{ talk_slots.0.room.name }}
+            {% if request.session.timezone %}
+                {% timezone request.session.timezone%}
+                    {% if talk_slots|length == 1 %}
+                    {{ talk_slots.0.start|date:"l N j" }}, {{ talk_slots.0.start|date:"H:i" }}–{{ talk_slots.0.end|date:"H:i" }}{% if request.session.timezone%} ({{request.session.timezone}}) {%endif%}, {{ talk_slots.0.room.name }}
+                    {% endif %}
+                {% endtimezone %}
             {% endif %}
+
             {% if submission.do_not_record %}
                 <span class="fa-stack">
                   <i class="fa fa-video-camera fa-stack-1x"></i>
